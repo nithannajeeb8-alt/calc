@@ -6242,3 +6242,471 @@ html[data-theme="gradient"] .pw-forecast-range-group > h3::after { border-color:
 @media (prefers-reduced-motion:reduce) {
   .entry-field:focus-within { transition:none!important; }
 }
+
+/* Aruvi 2.4.68 · breathing room for transaction history and detailed entry.
+   Keep the hierarchy clear at phone widths; do not trade legibility for density. */
+
+/* Transaction history: distinct date groups, readable summaries and calmer rows. */
+#page-activity .activity-card {
+  padding:20px 18px 20px;
+}
+#page-activity .activity-card > .section-header {
+  align-items:center;
+  margin-bottom:18px;
+}
+#page-activity .activity-card .section-header h2 {
+  font-size:18px;
+  line-height:1.25;
+}
+#page-activity .activity-date-group {
+  margin:22px 0 26px;
+  padding-top:16px;
+}
+#page-activity .activity-date-group:first-child {
+  padding-top:0;
+}
+#page-activity .activity-date-group > header {
+  gap:10px;
+  margin:0 0 12px;
+}
+#page-activity .activity-date-group > header > strong {
+  font-size:14px;
+  font-weight:750;
+  line-height:1.3;
+}
+#page-activity .activity-period-summary {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+  padding:0 0 12px;
+  border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent);
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.35;
+}
+#page-activity .activity-period-summary span {
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  min-height:28px;
+  padding:5px 8px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--surface-2);
+  white-space:normal;
+  font-size:11px;
+  font-variant-numeric:tabular-nums;
+}
+#page-activity .activity-period-summary b {
+  font-weight:750;
+  color:var(--ink);
+}
+#page-activity .activity-date-group-list,
+#page-activity .activity-date-group-body > .activity-date-group-list {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+#page-activity .transaction-swipe-shell {
+  border:0;
+  border-radius:18px;
+}
+#page-activity .transaction-row {
+  min-height:88px;
+  padding:14px 15px;
+  gap:13px;
+  border-radius:17px;
+}
+#page-activity .transaction-row .transaction-icon {
+  flex:0 0 44px;
+  width:44px;
+  height:44px;
+  border-radius:14px;
+}
+#page-activity .transaction-row .transaction-icon .icon-wrap {
+  width:21px;
+  height:21px;
+}
+#page-activity .transaction-row .transaction-main {
+  display:flex;
+  flex:1 1 auto;
+  flex-direction:column;
+  justify-content:center;
+  gap:5px;
+  min-width:0;
+}
+#page-activity .transaction-row .transaction-main strong {
+  display:-webkit-box;
+  overflow:hidden;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.35;
+}
+#page-activity .transaction-row .transaction-main small {
+  display:-webkit-box;
+  overflow:hidden;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  margin:0;
+  font-size:11px;
+  line-height:1.4;
+}
+#page-activity .transaction-row .transaction-amount {
+  flex:0 0 auto;
+  min-width:90px;
+  gap:5px;
+  align-self:center;
+}
+#page-activity .transaction-row .transaction-amount strong {
+  font-size:14px;
+  line-height:1.25;
+  letter-spacing:-.2px;
+}
+#page-activity .transaction-row .transaction-amount small {
+  font-size:10px;
+  line-height:1.3;
+}
+#page-activity .activity-year-group > summary {
+  min-height:56px;
+  padding:14px 16px;
+  font-size:13px;
+}
+#page-activity .activity-year-group > summary small {
+  font-size:11px;
+}
+#page-activity .activity-year-group .activity-date-group-body {
+  padding:0 14px 14px;
+}
+#page-activity #activity-filters {
+  gap:8px;
+  margin-bottom:14px;
+}
+#page-activity #activity-filters .filter-pill {
+  min-height:42px;
+  padding:9px 13px;
+  font-size:11px;
+}
+
+/* Detailed transaction editor: give each decision a clear and comfortable hit area. */
+.transaction-entry-form {
+  gap:18px;
+  padding:16px 20px 22px;
+}
+.transaction-entry-form .transaction-entry-type,
+.transaction-entry-form .transaction-entry-section {
+  gap:11px;
+}
+.transaction-entry-form .transaction-entry-label > span {
+  font-size:12px;
+  letter-spacing:.07em;
+}
+.transaction-entry-form .transaction-entry-label small {
+  font-size:11px;
+}
+.transaction-entry-form .type-switch {
+  gap:6px;
+  padding:5px;
+  border-radius:14px;
+}
+.transaction-entry-form .type-switch button {
+  min-height:50px;
+  padding:9px 7px;
+  border-radius:11px;
+  font-size:12px;
+  line-height:1.25;
+}
+.transaction-entry-form .type-switch button .icon-wrap {
+  width:17px;
+  height:17px;
+  flex-basis:17px;
+}
+.transaction-entry-form .type-switch button .icon-wrap i {
+  font-size:16px;
+}
+.transaction-entry-form .transaction-amount-panel {
+  padding:17px 18px 14px;
+  border-radius:19px;
+}
+.transaction-entry-form .transaction-amount-field {
+  margin-top:9px;
+}
+.transaction-entry-form .transaction-amount-field .amount-input {
+  min-height:60px;
+  font-size:36px!important;
+  line-height:1.15;
+  padding:7px 0 10px!important;
+}
+.transaction-entry-form .transaction-amount-panel .amount-helper {
+  margin-top:8px;
+  font-size:11px;
+  line-height:1.45;
+}
+.transaction-essentials {
+  gap:12px;
+}
+.transaction-entry-form .entry-field {
+  grid-template-columns:38px minmax(0,1fr);
+  gap:12px;
+  min-height:70px;
+  padding:12px 14px;
+  border-radius:15px;
+}
+.transaction-entry-form .entry-field-icon {
+  width:36px;
+  height:36px;
+  border-radius:11px;
+}
+.transaction-entry-form .entry-field-icon .icon-wrap {
+  width:19px;
+  height:19px;
+}
+.transaction-entry-form .entry-field-icon .icon-wrap i {
+  font-size:17px;
+}
+.transaction-entry-form .entry-field-name {
+  font-size:12px;
+  line-height:1.3;
+}
+.transaction-entry-form .entry-field-copy {
+  gap:5px;
+}
+.transaction-entry-form .entry-field-copy > input,
+.transaction-entry-form .entry-field-copy > select,
+.transaction-entry-form .entry-field-copy > input[type="date"] {
+  min-height:30px;
+  font-size:16px;
+  line-height:1.35;
+}
+.transaction-entry-form .form-disclosure {
+  border-radius:15px;
+}
+.transaction-entry-form .form-disclosure > summary {
+  min-height:58px;
+  padding:11px 14px;
+  gap:10px;
+}
+.transaction-entry-form .disclosure-title {
+  gap:9px;
+  font-size:13px;
+}
+.transaction-entry-form .disclosure-title > .icon-wrap {
+  flex-basis:30px;
+  width:30px;
+  height:30px;
+}
+.transaction-entry-form .disclosure-hint {
+  max-width:43%;
+  font-size:11px;
+  line-height:1.4;
+}
+.transaction-entry-form .disclosure-content {
+  gap:15px;
+  padding:4px 14px 16px;
+}
+.transaction-entry-form .disclosure-content .form-field {
+  gap:7px;
+}
+.transaction-entry-form .disclosure-content .form-field label {
+  font-size:11px;
+  line-height:1.4;
+}
+.transaction-entry-form .disclosure-content .form-field input,
+.transaction-entry-form .disclosure-content .form-field select,
+.transaction-entry-form .disclosure-content .form-field textarea {
+  min-height:48px;
+  padding:12px 13px;
+  font-size:16px!important;
+  line-height:1.4;
+}
+.transaction-entry-form .disclosure-content .form-field textarea {
+  min-height:92px;
+}
+.transaction-entry-form .disclosure-content .receipt-picker-actions {
+  gap:10px;
+}
+.transaction-entry-form .disclosure-content .receipt-picker-actions button {
+  min-height:48px;
+  padding:10px 9px;
+  font-size:12px;
+}
+.transaction-entry-form .voice-draft-action {
+  min-height:48px;
+  font-size:12px;
+}
+.transaction-entry-form .transaction-entry-actions {
+  gap:10px;
+  margin-top:2px;
+}
+.transaction-entry-form .transaction-entry-actions > button {
+  min-height:48px;
+  padding:12px 14px;
+  font-size:13px;
+}
+.transaction-entry-form .transaction-entry-actions .transaction-save-another {
+  min-height:44px;
+  font-size:12px;
+}
+.transaction-entry-form .form-note {
+  margin-top:0;
+  padding:12px 14px;
+  font-size:11px;
+  line-height:1.5;
+}
+
+@media(max-width:720px) {
+  #page-activity .activity-card {
+    padding:18px 16px 20px;
+  }
+  #page-activity .activity-date-group {
+    margin:19px 0 23px;
+    padding-top:14px;
+  }
+  #page-activity .activity-date-group > header > strong {
+    font-size:13px;
+  }
+  #page-activity .activity-period-summary {
+    gap:6px;
+    padding-bottom:11px;
+  }
+  #page-activity .activity-period-summary span {
+    min-height:30px;
+    padding:6px 8px;
+    font-size:11px;
+  }
+  #page-activity .activity-date-group-list,
+  #page-activity .activity-date-group-body > .activity-date-group-list {
+    gap:11px;
+  }
+  #page-activity .transaction-row {
+    min-height:86px;
+    padding:13px 13px;
+    gap:11px;
+    border-radius:16px;
+  }
+  #page-activity .transaction-row .transaction-icon {
+    flex-basis:42px;
+    width:42px;
+    height:42px;
+  }
+  #page-activity .transaction-row .transaction-main strong {
+    font-size:12.5px;
+  }
+  #page-activity .transaction-row .transaction-main small {
+    font-size:10.5px;
+  }
+  #page-activity .transaction-row .transaction-amount {
+    min-width:86px;
+  }
+  #page-activity .transaction-row .transaction-amount strong {
+    font-size:13px;
+  }
+  #page-activity .activity-year-group .activity-date-group-body {
+    padding:0 11px 12px;
+  }
+  .transaction-entry-form {
+    gap:19px;
+    padding:18px 18px 22px;
+  }
+  .transaction-entry-form .type-switch {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+    padding:6px;
+  }
+  .transaction-entry-form .type-switch button {
+    flex-direction:row;
+    justify-content:center;
+    gap:9px;
+    min-height:52px;
+    padding:10px 12px;
+    font-size:12px;
+    white-space:normal;
+  }
+  .transaction-entry-form .transaction-amount-panel {
+    padding:16px 16px 13px;
+  }
+  .transaction-entry-form .transaction-amount-field .amount-input {
+    min-height:58px;
+    font-size:35px!important;
+  }
+  .transaction-entry-form .entry-field {
+    min-height:72px;
+    grid-template-columns:38px minmax(0,1fr);
+    padding:12px 14px;
+    gap:12px;
+  }
+  .transaction-entry-form .form-disclosure > summary {
+    min-height:60px;
+    padding:11px 13px;
+  }
+  .transaction-entry-form .disclosure-content {
+    gap:16px;
+    padding:5px 13px 16px;
+  }
+  .transaction-entry-form .transaction-entry-actions {
+    gap:9px;
+  }
+  #page-activity .activity-search-row {
+    margin:10px 0 12px;
+  }
+  #page-activity .activity-toolbar {
+    gap:9px;
+    margin-bottom:11px;
+  }
+  #page-activity #activity-filters {
+    margin-bottom:15px;
+    padding-bottom:7px;
+  }
+}
+
+@media(max-width:390px) {
+  #page-activity .activity-card {
+    padding:16px 13px 18px;
+  }
+  #page-activity .transaction-row {
+    min-height:84px;
+    padding:12px 11px;
+    gap:9px;
+  }
+  #page-activity .transaction-row .transaction-icon {
+    flex-basis:39px;
+    width:39px;
+    height:39px;
+  }
+  #page-activity .transaction-row .transaction-amount {
+    min-width:81px;
+  }
+  #page-activity .transaction-row .transaction-amount strong {
+    font-size:12.5px;
+  }
+  .transaction-entry-form {
+    padding:16px 14px 20px;
+  }
+  .transaction-entry-form .transaction-entry-label {
+    align-items:flex-start;
+  }
+  .transaction-entry-form .transaction-entry-label small {
+    max-width:48%;
+  }
+  .transaction-entry-form .type-switch button {
+    min-height:50px;
+    padding:9px 8px;
+  }
+  .transaction-entry-form .disclosure-hint {
+    max-width:40%;
+    font-size:10.5px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  #page-activity .transaction-row,
+  .transaction-entry-form .type-switch button {
+    transition:none!important;
+  }
+}
