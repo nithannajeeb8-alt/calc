@@ -1,0 +1,12 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+/
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'
+
+/index.html
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'

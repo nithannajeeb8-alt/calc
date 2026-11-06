@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-/Wdo+AyhTqUEgTnnOeRlMyvbGZsfMZF4E9NgBTKFW+M=' https://cdn.jsdelivr.net https://esm.run 'unsafe-eval' 'wasm-unsafe-eval'; connect-src https://cdn.jsdelivr.net https://esm.run blob:; img-src blob: data:; worker-src blob: https://cdn.jsdelivr.net https://esm.run; style-src 'none'; font-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Aruvi local OCR runtime</title>
+</head>
+<body>
+<script type="module">
+'use strict';
+
+// This document runs only inside an iframe with sandbox="allow-scripts" and
+// without allow-same-origin. The OCR/WASM dependency chain needs eval internally;
+// the permission is deliberately confined to this opaque-origin document.
+const SDK_URL = 'https://cdn.jsdelivr.net/npm/@paddleocr/paddleocr-js@0.4.2/+esm';
+let engine = null;
+let modelUrls = [];
+let sdkPromise = null;
+
+function send(id, ok, result, error) {
+  parent.postMessage({
+    channel: 'pocketwise-paddle-sandbox',
+    type: 'response',
+    id: id,
+    ok: Boolean(ok),
+    result: result === undefined ? null : result,
+    error: error ? String(error) : ''
+  }, '*');
+}
+
+async function loadSdk() {
+  if (!sdkPromise) {
+    sdkPromise = import(SDK_URL).then(function (sdk) {
+      if (!sdk || !sdk.PaddleOCR || typeof sdk.PaddleOCR.create !== 'function') {
+        throw new Error('The PaddleOCR browser package did not expose its create method.');
+      }
+      return sdk.PaddleOCR;
+    }).catch(function (error) {
+      sdkPromise = null;
+      throw error;
+    });
+  }
+  return sdkPromise;
+}
+
+async function initialise(message) {
+  if (!(message.detectionModel instanceof Blob) || !(message.recognitionModel instanceof Blob)) {
+    throw new Error('The local OCR model files were not transferred correctly.');
+  }
+  const previousEngine = engine;
+  engine = null;
+  if (previousEngine && typeof previousEngine.dispose === 'function') {
+    try { await previousEngine.dispose(); } catch (_) { /* replacing a failed runtime */ }
+  }
+  modelUrls.forEach(function (url) { try { URL.revokeObjectURL(url); } catch (_) {} });
+  modelUrls = [];
+  const PaddleOCR = await loadSdk();
+  const detUrl = URL.createObjectURL(message.detectionModel);
+  const recUrl = URL.createObjectURL(message.recognitionModel);
+  modelUrls.push(detUrl, recUrl);
+  try {
+    const created = await PaddleOCR.create({
+      textDetectionModelName: String(message.detectionModelName || 'PP-OCRv6_small_det'),
+      textDetectionModelAsset: { url: detUrl },
+      textRecognitionModelName: String(message.recognitionModelName || 'PP-OCRv6_small_rec'),
+      textRecognitionModelAsset: { url: recUrl },
+      // Use the exact ONNX Runtime Web version bundled with PaddleOCR.js 0.4.2.
+      // One WASM thread works without COOP/COEP and avoids flaky mobile WebGPU paths.
+      ortOptions: {
+        backend: message.backend === 'wasm' ? 'wasm' : 'auto',
+        wasmPaths: 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.24.3/dist/',
+        numThreads: 1
+      }
+    });
+    if (!created || typeof created.predict !== 'function') {
+      throw new Error('PaddleOCR did not initialise correctly.');
+    }
+    engine = created;
+    return { ready: true, detectionModelName: message.detectionModelName, recognitionModelName: message.recognitionModelName };
+  } catch (error) {
+    engine = null;
+    modelUrls.forEach(function (url) { try { URL.revokeObjectURL(url); } catch (_) {} });
+    modelUrls = [];
+    throw error;
+  }
+}
+
+window.addEventListener('message', async function (event) {
+  if (event.source !== parent) return;
+  const message = event.data;
+  if (!message || message.channel !== 'pocketwise-paddle-sandbox' || !message.id) return;
+  try {
+    if (message.type === 'init') {
+      send(message.id, true, await initialise(message));
+      return;
+    }
+    if (message.type === 'predict') {
+      if (!engine) throw new Error('The local OCR engine is not ready.');
+      if (!(message.image instanceof Blob)) throw new Error('The screenshot region was not transferred correctly.');
+      const results = await engine.predict(message.image, message.options || {});
+      const result = Array.isArray(results) ? results[0] : null;
+      if (!result) throw new Error('PaddleOCR returned no result for this image region.');
+      // Return only the plain data Aruvi needs; never transfer runtime objects.
+      send(message.id, true, {
+        items: Array.isArray(result.items) ? result.items.map(function (item) {
+          return {
+            text: String(item && item.text || ''),
+            score: Number(item && item.score) || 0,
+            poly: Array.isArray(item && item.poly) ? item.poly.map(function (point) {
+              return [Number(point && point[0]) || 0, Number(point && point[1]) || 0];
+            }) : []
+          };
+        }) : [],
+        metrics: result.metrics || null
+      });
+      return;
+    }
+    if (message.type === 'dispose') {
+      if (engine && typeof engine.dispose === 'function') {
+        try { await engine.dispose(); } catch (_) { /* release is best-effort */ }
+      }
+      engine = null;
+      modelUrls.forEach(function (url) { try { URL.revokeObjectURL(url); } catch (_) {} });
+      modelUrls = [];
+      send(message.id, true, { disposed: true });
+      return;
+    }
+    throw new Error('Unknown local OCR command.');
+  } catch (error) {
+    send(message.id, false, null, error && error.message || 'The isolated OCR engine failed.');
+  }
+});
+
+parent.postMessage({ channel: 'pocketwise-paddle-sandbox', type: 'ready' }, '*');
+</script>
+</body>
+</html>
