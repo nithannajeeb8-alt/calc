@@ -99,11 +99,11 @@
 
     if (reducedMotion) { startAnimation(); return; }
 
-    // Wait for the requested semibold face when possible. Offline or blocked
+    // Wait for the requested bold face when possible. Offline or blocked
     // font requests fall back to the local stack after 700ms, without hanging.
     var fontReady = (document.fonts && document.fonts.load)
       ? Promise.race([
-          document.fonts.load('600 1em "Bricolage Grotesque"').catch(function () {}),
+          document.fonts.load('700 1em "Bricolage Grotesque"').catch(function () {}),
           new Promise(function (resolve) { window.setTimeout(resolve, 700); })
         ])
       : Promise.resolve();

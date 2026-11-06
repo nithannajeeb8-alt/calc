@@ -8,12 +8,7 @@
   const doc = root.document;
   if (!doc || typeof doc.addEventListener !== 'function') return;
 
-  function preventPageScale(event) {
-    if (event && event.cancelable) event.preventDefault();
-  }
-  for (const type of ['gesturestart', 'gesturechange', 'gestureend']) {
-    doc.addEventListener(type, preventPageScale, { capture: true, passive: false });
-  }
+  // Preserve native browser pinch-to-zoom for users who need magnification.
 
   const pointerMedia = typeof root.matchMedia === 'function'
     ? root.matchMedia('(hover: hover) and (pointer: fine)')
