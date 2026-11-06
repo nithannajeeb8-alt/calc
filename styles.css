@@ -4915,48 +4915,48 @@ html[data-theme="gradient"] .switch input:checked+span { background:var(--gradie
    Functional controls use Liquid Glass sparingly; content rows use a quieter
    standard surface so transactions remain distinct and legible. */
 :root {
-  --chart-1:#005A9C;
-  --chart-2:#B54708;
-  --chart-3:#007A5E;
-  --chart-4:#7B3F8C;
-  --chart-5:#B42318;
-  --chart-6:#146C94;
-  --chart-7:#7A5A00;
-  --chart-8:#475569;
-  --chart-income:#006B45;
-  --chart-expense:#B42318;
-  --chart-primary:#005A9C;
-  --chart-blue:#005A9C;
+  --chart-1:#456F91;
+  --chart-2:#A96345;
+  --chart-3:#3D7969;
+  --chart-4:#806486;
+  --chart-5:#A35250;
+  --chart-6:#4D8290;
+  --chart-7:#8C7445;
+  --chart-8:#667580;
+  --chart-income:#28745B;
+  --chart-expense:#A65353;
+  --chart-primary:#456F91;
+  --chart-blue:#456F91;
   --chart-grid:rgba(36,48,42,.18);
 }
 html[data-theme="dark"] {
-  --chart-1:#56B4E9;
-  --chart-2:#E69F00;
-  --chart-3:#33C38F;
-  --chart-4:#D88BC2;
-  --chart-5:#FF7B72;
-  --chart-6:#8CC8E8;
-  --chart-7:#D7B54A;
-  --chart-8:#A9B7C6;
-  --chart-income:#35C98A;
-  --chart-expense:#FF7770;
-  --chart-primary:#56B4E9;
-  --chart-blue:#56B4E9;
+  --chart-1:#8DB9D5;
+  --chart-2:#D49A7C;
+  --chart-3:#79B6A1;
+  --chart-4:#B49ABD;
+  --chart-5:#D18C8A;
+  --chart-6:#83B6C1;
+  --chart-7:#C5AD76;
+  --chart-8:#9AA9B4;
+  --chart-income:#66B394;
+  --chart-expense:#D98584;
+  --chart-primary:#8DB9D5;
+  --chart-blue:#8DB9D5;
   --chart-grid:rgba(255,255,255,.18);
 }
 html[data-theme="gradient"] {
-  --chart-1:#005A9C;
-  --chart-2:#B54708;
-  --chart-3:#007A5E;
-  --chart-4:#7B3F8C;
-  --chart-5:#B42318;
-  --chart-6:#146C94;
-  --chart-7:#7A5A00;
-  --chart-8:#475569;
-  --chart-income:#006B45;
-  --chart-expense:#B42318;
-  --chart-primary:#005A9C;
-  --chart-blue:#005A9C;
+  --chart-1:#456F91;
+  --chart-2:#A96345;
+  --chart-3:#3D7969;
+  --chart-4:#806486;
+  --chart-5:#A35250;
+  --chart-6:#4D8290;
+  --chart-7:#8C7445;
+  --chart-8:#667580;
+  --chart-income:#28745B;
+  --chart-expense:#A65353;
+  --chart-primary:#456F91;
+  --chart-blue:#456F91;
   --chart-grid:rgba(35,45,40,.23);
 }
 
@@ -5191,27 +5191,27 @@ html[data-theme="gradient"] .heat-cell.heat-4 { background:#005A9C; }
 
 /* Aruvi 2.4.53 — scene-specific charts and readable empty-progress materials. */
 html[data-theme="gradient"][data-gradient="coral-wave"] {
-  --chart-1:#236B8E; --chart-2:#16745F; --chart-3:#6A4A9A; --chart-4:#9A5700;
-  --chart-5:#AA3454; --chart-6:#237D9D; --chart-7:#5B6D2D; --chart-8:#505A67;
-  --chart-income:#16745F; --chart-expense:#B12E42; --chart-primary:#236B8E; --chart-blue:#236B8E;
+  --chart-1:#456F91; --chart-2:#A96345; --chart-3:#3D7969; --chart-4:#806486;
+  --chart-5:#A35250; --chart-6:#4D8290; --chart-7:#8C7445; --chart-8:#667580;
+  --chart-income:#28745B; --chart-expense:#A65353; --chart-primary:#456F91; --chart-blue:#456F91;
   --chart-grid:rgba(65,75,82,.14);
 }
 html[data-theme="gradient"][data-gradient="green-screen"] {
-  --chart-1:#1D5E8A; --chart-2:#A23C72; --chart-3:#5A48A1; --chart-4:#9A5800;
-  --chart-5:#B13C33; --chart-6:#08777A; --chart-7:#4A6A2A; --chart-8:#4B5969;
-  --chart-income:#08777A; --chart-expense:#B13C33; --chart-primary:#1D5E8A; --chart-blue:#1D5E8A;
+  --chart-1:#456F91; --chart-2:#A96345; --chart-3:#3D7969; --chart-4:#806486;
+  --chart-5:#A35250; --chart-6:#4D8290; --chart-7:#8C7445; --chart-8:#667580;
+  --chart-income:#28745B; --chart-expense:#A65353; --chart-primary:#456F91; --chart-blue:#456F91;
   --chart-grid:rgba(54,75,61,.14);
 }
 html[data-theme="gradient"][data-gradient="retro-magic"] {
-  --chart-1:#275B91; --chart-2:#A4520B; --chart-3:#0A755E; --chart-4:#78439C;
-  --chart-5:#B12C66; --chart-6:#257A98; --chart-7:#786319; --chart-8:#515A70;
-  --chart-income:#0A755E; --chart-expense:#B12C66; --chart-primary:#78439C; --chart-blue:#275B91;
+  --chart-1:#456F91; --chart-2:#A96345; --chart-3:#3D7969; --chart-4:#806486;
+  --chart-5:#A35250; --chart-6:#4D8290; --chart-7:#8C7445; --chart-8:#667580;
+  --chart-income:#28745B; --chart-expense:#A65353; --chart-primary:#456F91; --chart-blue:#456F91;
   --chart-grid:rgba(72,60,86,.14);
 }
 html[data-theme="gradient"][data-gradient="on-fire"] {
-  --chart-1:#205B8A; --chart-2:#08766B; --chart-3:#69499C; --chart-4:#A75E24;
-  --chart-5:#B23D35; --chart-6:#237A9B; --chart-7:#4B702E; --chart-8:#55515F;
-  --chart-income:#08766B; --chart-expense:#B23D35; --chart-primary:#205B8A; --chart-blue:#205B8A;
+  --chart-1:#456F91; --chart-2:#A96345; --chart-3:#3D7969; --chart-4:#806486;
+  --chart-5:#A35250; --chart-6:#4D8290; --chart-7:#8C7445; --chart-8:#667580;
+  --chart-income:#28745B; --chart-expense:#A65353; --chart-primary:#456F91; --chart-blue:#456F91;
   --chart-grid:rgba(77,62,53,.14);
 }
 html[data-theme="gradient"] .heat-cell.heat-1 { background:color-mix(in srgb,var(--chart-primary) 16%,rgba(255,255,255,.76)); }
@@ -6852,4 +6852,44 @@ html[data-theme="gradient"] .pw-forecast-pattern-actions button[data-forecast-ac
 html[data-theme="gradient"] #page-activity #activity-filters { justify-content:flex-start; }
 
 html[data-theme="gradient"] .privacy-device-card .shake-quick-entry-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
-html[data-theme="gradient"] .privacy-device-card .shake-quick-entry-row .switch { justify-self:end; align-self:center; margin:0; }
+html[data-theme="gradient"] .privacy-device-card .shake-quick-entry-row .switch { justify-self:start; align-self:center; margin:0; }
+
+/* Keep Privacy and device actions anchored to the left in every appearance. */
+.privacy-device-card .setting-row {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  justify-items:start;
+  align-items:start;
+  gap:9px;
+}
+.privacy-device-card .setting-row > button,
+.privacy-device-card .setting-row > a,
+.privacy-device-card .setting-row > .shortcut-setting-actions,
+.privacy-device-card .setting-row > .pw-local-ai-actions,
+.privacy-device-card .setting-row > .status-pill {
+  justify-self:start;
+  align-self:start;
+  margin:0;
+  max-width:100%;
+}
+.privacy-device-card .pw-local-ai-actions,
+.privacy-device-card .shortcut-setting-actions { justify-content:flex-start; width:100%; }
+
+/* Theme-matched OCR activity indicator; the animation repeats every 1.5 seconds. */
+.pw-ocr-status.is-loading { display:flex; align-items:center; justify-content:center; gap:11px; min-height:34px; color:var(--ink); }
+.pw-ocr-loader { height:15px; aspect-ratio:5; display:grid; flex:none; color:var(--green); }
+.pw-ocr-loader:before,.pw-ocr-loader:after {
+  content:""; grid-area:1/1; height:inherit;
+  --_g:no-repeat radial-gradient(farthest-side,currentColor 94%,transparent);
+  background:var(--_g) left,var(--_g) right;
+  background-size:15px 100%; background-repeat:no-repeat;
+  animation:pw-ocr-loader-motion 1.5s infinite linear;
+}
+.pw-ocr-loader:after { margin-left:auto; --s:-1; }
+@keyframes pw-ocr-loader-motion {
+  0% { transform:translateY(calc(var(--s,1)*0px)); aspect-ratio:2.3; }
+  33% { transform:translateY(calc(var(--s,1)*8px)); aspect-ratio:2.3; }
+  66% { transform:translateY(calc(var(--s,1)*8px)); aspect-ratio:3.7; }
+  100% { transform:translateY(calc(var(--s,1)*0px)); aspect-ratio:3.7; }
+}
+@media(prefers-reduced-motion:reduce) { .pw-ocr-loader:before,.pw-ocr-loader:after { animation:none; } }

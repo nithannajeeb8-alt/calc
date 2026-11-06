@@ -544,7 +544,7 @@
       // Earlier builds shipped with fabricated demo finances. Remove those once, so users start clean.
       if(saved.sample===true){
         const fresh=initialState();
-        state={...fresh,settings:{...fresh.settings,theme:saved.settings?.theme||'light',gradientPreset:saved.settings?.gradientPreset||'coral-wave',liquidGlass:!!saved.settings?.liquidGlass,smartUI:!!saved.settings?.smartUI,hideBalances:!!saved.settings?.hideBalances}};
+        state={...fresh,settings:{...fresh.settings,theme:saved.settings?.theme||'light',gradientPreset:saved.settings?.gradientPreset||'coral-wave',liquidGlass:!!saved.settings?.liquidGlass,smartUI:!!saved.settings?.smartUI,hideBalances:!!saved.settings?.hideBalances,shakeQuickEntryEnabled:saved.settings?.shakeQuickEntryEnabled===true}};
       }
       state.sample=false;
       // Add newly shipped categories to existing local data without changing transactions or user categories.
@@ -556,6 +556,7 @@
       state.settings.firstRunFlowStarted=true;
       state.settings.firstRunFlowCompleted=false;
     }
+    try{const shakePreference=localStorage.getItem('aruvi-shake-quick-entry-v1');if(shakePreference==='1'||shakePreference==='0')state.settings.shakeQuickEntryEnabled=shakePreference==='1';}catch(_){}
     try { await processDueRecurringEntries(false); await persist(); } catch (error) { console.error(error); toast(error.message || 'Could not prepare local storage. Export backups before continuing.', 'error'); }
     if(recoverySnapshot)toast('A storage recovery copy was preserved. Open Settings → Your data to export it before clearing site data.','amber');
     applyTheme();
@@ -627,7 +628,7 @@
     const value=state?.settings?.interactionFeedback;
     return value&&typeof value==='object'?value:{enabled:false,haptics:true,sounds:true,soundStyle:'soft'};
   }
-  function hasVibrationSupport(){return typeof navigator!=='undefined'&&typeof navigator.vibrate==='function';}
+  function hasVibrationSupport(){return !isIOSShareContext()&&typeof navigator!=='undefined'&&typeof navigator.vibrate==='function';}
   function getAruviAudioContext(){
     const AudioCtx=window.AudioContext||window.webkitAudioContext;
     if(!AudioCtx)return null;
@@ -1146,7 +1147,7 @@
     const feedbackMaster=$('#interaction-feedback-setting'),feedbackOptions=$('#interaction-feedback-options'),haptics=$('#interaction-feedback-haptics'),sounds=$('#interaction-feedback-sounds'),style=$('#interaction-feedback-style');
     if(feedbackMaster)feedbackMaster.checked=!!feedback.enabled;
     if(feedbackOptions)feedbackOptions.hidden=!feedback.enabled;
-    if(haptics){haptics.checked=hasVibrationSupport()&&!!feedback.haptics;haptics.disabled=!hasVibrationSupport();}
+    if(haptics){const vibrationAvailable=hasVibrationSupport(),row=haptics.closest('.setting-row');if(row)row.hidden=!vibrationAvailable;haptics.checked=vibrationAvailable&&!!feedback.haptics;haptics.disabled=!vibrationAvailable;}
     if(sounds)sounds.checked=!!feedback.sounds;
     if(style)style.value=feedback.soundStyle||'soft';
     const hapticsNote=$('#interaction-feedback-haptics-note');
@@ -1691,7 +1692,7 @@
   }
 
   function renderInsights(){const period=$('#insights-period')?.value||'month';const txs=periodTransactions(period);let filtered=txs;if(period==='last-month')filtered=periodTransactions('last-month');const t=totalsFor(filtered);$$('[data-money="insight-income"]').forEach(e=>e.textContent=fmtHidden(t.income));$$('[data-money="insight-expense"]').forEach(e=>e.textContent=fmtHidden(t.expenses));$$('[data-money="insight-net"]').forEach(e=>{e.textContent=fmtHidden(t.net);e.style.color=t.net<0?'var(--red)':'var(--green)'});let [start,end]=getPeriodRange(period);if(period==='all'){start=state.transactions.length?state.transactions.reduce((min,t)=>t.date<min? t.date:min,today()):today();end=today();}const span=Math.max(1,Math.ceil((dateFrom(end)-dateFrom(start))/86400000)+1);$$('[data-money="daily-average"]').forEach(e=>e.textContent=fmtHidden(t.expenses/Math.max(1,Math.min(span,Math.ceil((dateFrom(today())-dateFrom(start))/86400000)||span))));renderCategoryLegend(period);renderHeatmap(period);renderRankings(period);renderGoals();renderInsightDebts();renderYearArchive();renderForecasting();renderPlanningTools();renderFinanceAnalytics();scheduleCharts();fitLargeMoneyAmounts();}
-  const chartColorFallback=['#005A9C','#B54708','#007A5E','#7B3F8C','#B42318','#146C94','#7A5A00','#475569'];
+  const chartColorFallback=['#456F91','#A96345','#3D7969','#806486','#A35250','#4D8290','#8C7445','#667580'];
   function chartColor(index){const normalized=((Number(index)||0)%chartColorFallback.length+chartColorFallback.length)%chartColorFallback.length;return cssVar(`--chart-${normalized+1}`)||chartColorFallback[normalized];}
   function chartCategoryColor(item,index=0){if(item?.id==='__others__'||item?.id==='__uncategorised__'||item?.name==='Other categories')return chartColor(chartColorFallback.length-1);const activity=state.activities.find(candidate=>candidate.name===item?.name||candidate.id===item?.id);const stableIndex=activity?state.activities.findIndex(candidate=>candidate.id===activity.id):index;return chartColor(stableIndex>=0?stableIndex:index);}
   function chartCategoryItems(items,limit=5){if(items.length<=limit)return items;const kept=items.slice(0,limit-1),rest=items.slice(limit-1);return [...kept,{id:'__others__',name:'Other categories',value:sumMoney(rest.map(item=>Number(item.value)||0)),count:rest.reduce((total,item)=>total+(Number(item.count)||0),0)}];}
@@ -2143,21 +2144,18 @@
   function renderQuickAddStep(step){
     if(!quickAddDraft)return;
     const d=quickAddDraft;
-    const progress=`<div class="quick-progress" aria-label="Step ${({amount:1,type:2,activity:3,note:4})[step]} of 4">${['amount','type','activity','note'].map((x,i)=>`<span class="${['amount','type','activity','note'].indexOf(step)>=i?'done':''}"></span>`).join('')}</div>`;
+    const steps=['amount','type','activity'],stepIndex=steps.indexOf(step);const progress=`<div class="quick-progress" aria-label="Step ${stepIndex+1} of 3">${steps.map((_,i)=>`<span class="${i<=stepIndex?'done':''}"></span>`).join('')}</div>`;
     let body='';
     if(step==='amount'){
-      body=`<form id="quick-flow-amount" class="modal-body quick-flow"><p class="quick-step-label">STEP 1 OF 4</p><h3>How much?</h3><p class="muted">Start with the amount. Add the rest in a few taps.</p><label class="quick-amount-wrap" for="quick-flow-value"><span>₹</span><input id="quick-flow-value" name="amount" class="quick-flow-value" inputmode="decimal" enterkeyhint="done" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="0" value="${escapeHTML(d.amount)}" style="font-family:var(--display)!important;font-weight:800!important;line-height:1.06!important;-webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums" required aria-label="Amount in rupees"></label><p id="quick-flow-error" class="field-error" hidden></p><button class="primary-button quick-next" type="submit">Continue <span aria-hidden="true">→</span></button><div class="quick-paste-grid ${isAndroid?'single-action':''}" aria-label="Import transaction details">${isAndroid?'':`<button class="secondary-button quick-paste-button" type="button" id="paste-shortcut-quick">${icon('clipboard')} <span>Paste shortcut</span></button>`}<button class="secondary-button quick-paste-button" type="button" id="paste-bank-sms-quick"><span>Paste bank SMS</span></button></div>${isAndroid?'':`<button class="text-button quick-manual-key" type="button" id="enter-shortcut-key">Enter transaction key manually</button>`}<button class="text-button quick-cancel" type="button" data-cancel-modal>Cancel</button></form>`;
+      body=`<form id="quick-flow-amount" class="modal-body quick-flow"><p class="quick-step-label">STEP 1 OF 3</p><h3>How much?</h3><p class="muted">Start with the amount. Add the rest in a few taps.</p><label class="quick-amount-wrap" for="quick-flow-value"><span>₹</span><input id="quick-flow-value" name="amount" class="quick-flow-value" inputmode="decimal" enterkeyhint="done" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="0" value="${escapeHTML(d.amount)}" style="font-family:var(--display)!important;font-weight:800!important;line-height:1.06!important;-webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums" required aria-label="Amount in rupees"></label><p id="quick-flow-error" class="field-error" hidden></p><button class="primary-button quick-next" type="submit">Continue <span aria-hidden="true">→</span></button><div class="quick-paste-grid ${isAndroid?'single-action':''}" aria-label="Import transaction details">${isAndroid?'':`<button class="secondary-button quick-paste-button" type="button" id="paste-shortcut-quick">${icon('clipboard')} <span>Paste shortcut</span></button>`}<button class="secondary-button quick-paste-button" type="button" id="paste-bank-sms-quick"><span>Paste bank SMS</span></button></div>${isAndroid?'':`<button class="text-button quick-manual-key" type="button" id="enter-shortcut-key">Enter transaction key manually</button>`}<button class="text-button quick-cancel" type="button" data-cancel-modal>Cancel</button></form>`;
     } else if(step==='type'){
-      body=`<div class="modal-body quick-flow"><p class="quick-step-label">STEP 2 OF 4 · ${escapeHTML(money(parseAmount(d.amount)))}</p><h3>What happened?</h3><p class="muted">Choose how this amount should affect your records.</p><div class="quick-choice-list"><button type="button" class="quick-choice income-choice" data-quick-type="income"><span class="quick-choice-icon" aria-hidden="true">${icon('dollar')}</span><span><strong>Income</strong><small>Allowance, salary or other money received</small></span><span>›</span></button><button type="button" class="quick-choice expense-choice" data-quick-type="expense"><span class="quick-choice-icon">↘</span><span><strong>Purchase / expense</strong><small>A purchase, bill, food, travel or another cost</small></span><span>›</span></button><button type="button" class="quick-choice" data-quick-type="refund"><span class="quick-choice-icon">↩</span><span><strong>I got a refund</strong><small>Money returned for a previous purchase</small></span><span>›</span></button></div><button class="text-button quick-cancel" type="button" data-quick-back="amount">← Change amount</button></div>`;
+      body=`<div class="modal-body quick-flow"><p class="quick-step-label">STEP 2 OF 3 · ${escapeHTML(money(parseAmount(d.amount)))}</p><h3>What happened?</h3><p class="muted">Choose how this amount should affect your records.</p><div class="quick-choice-list"><button type="button" class="quick-choice income-choice" data-quick-type="income"><span class="quick-choice-icon" aria-hidden="true">${icon('dollar')}</span><span><strong>Income</strong><small>Allowance, salary or other money received</small></span><span>›</span></button><button type="button" class="quick-choice expense-choice" data-quick-type="expense"><span class="quick-choice-icon">↘</span><span><strong>Purchase / expense</strong><small>A purchase, bill, food, travel or another cost</small></span><span>›</span></button><button type="button" class="quick-choice" data-quick-type="refund"><span class="quick-choice-icon">↩</span><span><strong>I got a refund</strong><small>Money returned for a previous purchase</small></span><span>›</span></button></div><button class="text-button quick-cancel" type="button" data-quick-back="amount">← Change amount</button></div>`;
     } else if(step==='activity'){
       const type=d.type;const options=state.activities.filter(a=>a.kind==='both'||a.kind===type||(type==='expense'&&a.kind==='refund')).sort((a,b)=>{const ca=state.transactions.filter(t=>t.activityId===a.id).length,cb=state.transactions.filter(t=>t.activityId===b.id).length;return cb-ca||a.name.localeCompare(b.name)});
-      body=`<div class="modal-body quick-flow"><p class="quick-step-label">STEP 3 OF 4 · ${escapeHTML(type==='income'?'MONEY IN':type==='refund'?'REFUND':'MONEY OUT')}</p><h3>Choose a category</h3><p class="muted">Pick the closest match. You can change categories later.</p><div class="quick-category-grid">${options.map(a=>`<button type="button" class="quick-category" data-quick-activity="${escapeHTML(a.id)}"><span>${icon(a.icon)}</span><strong>${escapeHTML(a.name)}</strong></button>`).join('')}</div><button class="text-button quick-cancel" type="button" data-quick-back="type">← Back</button></div>`;
-    } else {
-      body=`<form id="quick-flow-note" class="modal-body quick-flow"><p class="quick-step-label">STEP 4 OF 4 · ${escapeHTML(activityById(d.activityId).name)}</p><h3>${d.fromShortcut?'Review transaction':'Add a note'}</h3><p class="muted">${d.fromShortcut?'Imported from your iPhone Shortcut. Check the details before saving.':'Optional. A short note makes the receipt easier to recognize later.'}</p><div class="quick-summary"><span>${escapeHTML(d.type==='income'?'Income':d.type==='refund'?'Refund':'Purchase')}</span><strong>${escapeHTML(money(parseAmount(d.amount)))}</strong><small>${escapeHTML(activityById(d.activityId).name)}</small></div><div class="form-field"><label for="quick-flow-note-value">NOTE · OPTIONAL</label><textarea id="quick-flow-note-value" name="note" rows="2" maxlength="240" placeholder="What was it for?" autofocus>${escapeHTML(d.note||'')}</textarea></div><div class="form-grid quick-extra-fields"><div class="form-field"><label for="quick-flow-account">ACCOUNT</label><select id="quick-flow-account" name="accountId">${accountOptions(d.accountId)}</select></div><div class="form-field"><label for="quick-flow-payment">PAID USING</label><select id="quick-flow-payment" name="paymentMethod">${['Cash','UPI','Bank transfer','Debit card','Credit card','Wallet','Other'].map(v=>`<option value="${v}" ${d.paymentMethod===v?'selected':''}>${v}</option>`).join('')}</select></div></div><button class="primary-button quick-next" type="submit">Save transaction · ${escapeHTML(money(parseAmount(d.amount)))}</button><button class="text-button quick-cancel" type="button" id="quick-flow-skip">Skip note & save</button><button class="text-button quick-cancel" type="button" data-quick-back="activity">← Change category</button></form>`;
+      body=`<div class="modal-body quick-flow"><p class="quick-step-label">STEP 3 OF 3 · ${escapeHTML(type==='income'?'MONEY IN':type==='refund'?'REFUND':'MONEY OUT')}</p><h3>Choose a category</h3><p class="muted">Pick the closest match. You can change categories later.</p><div class="quick-category-grid">${options.map(a=>`<button type="button" class="quick-category" data-quick-activity="${escapeHTML(a.id)}"><span>${icon(a.icon)}</span><strong>${escapeHTML(a.name)}</strong></button>`).join('')}</div><button class="text-button quick-cancel" type="button" data-quick-back="type">← Back</button></div>`;
     }
     openModal('Quick Add',`${progress}${body}`,'QUICK ENTRY · PRIVATE ON THIS DEVICE');
     if(step==='amount')setTimeout(()=>{const amountField=$('#quick-flow-value');if(amountField){amountField.style.setProperty('font-family','var(--display)','important');amountField.style.setProperty('font-weight','800','important');amountField.style.setProperty('line-height','1.06','important');amountField.style.setProperty('-webkit-text-size-adjust','100%');fitLargeMoneyAmounts(amountField);amountField.focus({preventScroll:true});}},60);
-    if(step==='note')setTimeout(()=>$('#quick-flow-note-value')?.focus({preventScroll:true}),60);
   }
   async function saveQuickAdd(){
     if(!quickAddDraft||quickAddSaving)return;
@@ -2175,7 +2173,7 @@
       const data={type:d.type,amount,activityId:d.activityId,accountId:d.accountId,date:d.date||today(),note:d.note||'',paymentMethod:d.paymentMethod||'Cash',repeat:'none'};
       // Apply the same Smart Rules to Quick Add and Shortcut imports as the full transaction form.
       // Previously this save path bypassed the rule engine, making rules appear broken for a common workflow.
-      const matchedRule=d.requestId?null:applySmartRule(data);
+      const matchedRule=applySmartRule(data);
       const tx=addTransaction(data);
       if(!tx)throw new Error('The transaction could not be created.');
       if(d.requestId)tx.shortcutRequestId=d.requestId;
@@ -2896,9 +2894,9 @@
       if(event.target.closest('#paste-bank-sms-quick')){await pasteBankSms();return;}
       if(event.target.closest('#resume-key')){showShortcutKeyPrompt();return;}
       const quickType=event.target.closest('[data-quick-type]');if(quickType&&quickAddDraft){quickAddDraft.type=quickType.dataset.quickType;renderQuickAddStep('activity');return;}
-      const quickActivity=event.target.closest('[data-quick-activity]');if(quickActivity&&quickAddDraft){quickAddDraft.activityId=quickActivity.dataset.quickActivity;renderQuickAddStep('note');return;}
+      const quickActivity=event.target.closest('[data-quick-activity]');if(quickActivity&&quickAddDraft){quickAddDraft.activityId=quickActivity.dataset.quickActivity;await saveQuickAdd();return;}
       const quickBack=event.target.closest('[data-quick-back]');if(quickBack&&quickAddDraft){renderQuickAddStep(quickBack.dataset.quickBack);return;}
-      if(event.target.closest('#quick-flow-skip')){const note=$('#quick-flow-note-value');quickAddDraft.note=String(note?.value||'').trim();const account=$('#quick-flow-account'),payment=$('#quick-flow-payment');if(account)quickAddDraft.accountId=account.value;if(payment)quickAddDraft.paymentMethod=payment.value;await saveQuickAdd();return;}
+      
       const storyButton=event.target.closest('[data-story-date]');if(storyButton){openDailyStory(storyButton.dataset.storyDate);return;}
       if(event.target.closest('[data-story-view-activity]')){closeModal();setPage('activity');return;}
       const pageBtn=event.target.closest('[data-page]');if(pageBtn){setPage(pageBtn.dataset.page);return;}
@@ -3050,7 +3048,7 @@
       const submitButtons=[...form.querySelectorAll('button[type="submit"],input[type="submit"]')];
       submitButtons.forEach(button=>{button.disabled=true;button.setAttribute('aria-busy','true');});
       try {
-        if(form.id==='profile-form'){const fd=new FormData(form),name=String(fd.get('profileName')||'').trim(),color=String(fd.get('profileColor')||'mint');if(!name){$('#profile-name-input')?.focus();toast('Enter a display name first.','error');return;}const snapshot=JSON.stringify(state);state.settings.profileName=name.slice(0,48);state.settings.profileColor=profileColors[color]?color:'mint';state.settings.profileComplete=true;if(!(await persistMutation(snapshot,'Could not save your profile. Your previous settings were restored.')))return;renderProfile();closeModal();if(!state.settings.privacyReviewed){showPrivacyPage();}else toast('Profile updated.');return;}else if(form.id==='shortcut-key-form'){const raw=String(new FormData(form).get('payload')||'').trim();try{await importShortcutText(raw);}catch(error){const field=$('#shortcut-key-value');toast(error.message||'Could not read that transaction.','error');field?.focus();}return;}else if(form.id==='quick-flow-amount'){const fd=new FormData(form),amount=parseAmount(fd.get('amount'));if(!Number.isFinite(amount)||amount<=0){$('#quick-flow-error').hidden=false;$('#quick-flow-error').textContent='Enter an amount greater than ₹0.';$('#quick-flow-value').focus();return;}quickAddDraft.amount=String(amount);renderQuickAddStep('type');}else if(form.id==='quick-flow-note'){quickAddDraft.note=String(new FormData(form).get('note')||'').trim();quickAddDraft.accountId=$('#quick-flow-account').value;quickAddDraft.paymentMethod=$('#quick-flow-payment').value;await saveQuickAdd();}else if(form.id==='transaction-form'){form.dataset.saveMode=e.submitter?.value==='another'?'another':'save';await saveTransactionForm(form);}else if(form.id==='budget-form')await saveBudget(form);else if(form.id==='debt-form')await saveDebt(form);else if(form.id==='repayment-form')await saveRepayment(form);else if(form.id==='account-form')await addAccountForm(form);else if(form.id==='account-edit-form')await saveAccountEdit(form);else if(form.id==='activity-form')await addActivityForm(form);else if(form.id==='activity-edit-form')await saveActivityEdit(form);else if(form.id==='goal-form')await saveGoal(form);else if(form.id==='goal-contribution-form')await saveGoalContribution(form);else if(form.id==='reminder-form')await saveReminder(form);else if(form.id==='weekly-allowance-form')await saveWeeklyAllowance(form);else if(form.id==='smart-rule-form')await saveSmartRule(form);else if(form.id==='merchant-rule-form')await saveMerchantRule(form);else if(form.id==='activity-advanced-filter-form')await saveActivityFilters(form);else if(form.id==='debt-plan-form')await saveDebtPlan(form);else if(form.id==='finance-salary-plan-form')await saveSalaryPlan(form);
+        if(form.id==='profile-form'){const fd=new FormData(form),name=String(fd.get('profileName')||'').trim(),color=String(fd.get('profileColor')||'mint');if(!name){$('#profile-name-input')?.focus();toast('Enter a display name first.','error');return;}const snapshot=JSON.stringify(state);state.settings.profileName=name.slice(0,48);state.settings.profileColor=profileColors[color]?color:'mint';state.settings.profileComplete=true;if(!(await persistMutation(snapshot,'Could not save your profile. Your previous settings were restored.')))return;renderProfile();closeModal();if(!state.settings.privacyReviewed){showPrivacyPage();}else toast('Profile updated.');return;}else if(form.id==='shortcut-key-form'){const raw=String(new FormData(form).get('payload')||'').trim();try{await importShortcutText(raw);}catch(error){const field=$('#shortcut-key-value');toast(error.message||'Could not read that transaction.','error');field?.focus();}return;}else if(form.id==='quick-flow-amount'){const fd=new FormData(form),amount=parseAmount(fd.get('amount'));if(!Number.isFinite(amount)||amount<=0){$('#quick-flow-error').hidden=false;$('#quick-flow-error').textContent='Enter an amount greater than ₹0.';$('#quick-flow-value').focus();return;}quickAddDraft.amount=String(amount);renderQuickAddStep('type');}else if(form.id==='transaction-form'){form.dataset.saveMode=e.submitter?.value==='another'?'another':'save';await saveTransactionForm(form);}else if(form.id==='budget-form')await saveBudget(form);else if(form.id==='debt-form')await saveDebt(form);else if(form.id==='repayment-form')await saveRepayment(form);else if(form.id==='account-form')await addAccountForm(form);else if(form.id==='account-edit-form')await saveAccountEdit(form);else if(form.id==='activity-form')await addActivityForm(form);else if(form.id==='activity-edit-form')await saveActivityEdit(form);else if(form.id==='goal-form')await saveGoal(form);else if(form.id==='goal-contribution-form')await saveGoalContribution(form);else if(form.id==='reminder-form')await saveReminder(form);else if(form.id==='weekly-allowance-form')await saveWeeklyAllowance(form);else if(form.id==='smart-rule-form')await saveSmartRule(form);else if(form.id==='merchant-rule-form')await saveMerchantRule(form);else if(form.id==='activity-advanced-filter-form')await saveActivityFilters(form);else if(form.id==='debt-plan-form')await saveDebtPlan(form);else if(form.id==='finance-salary-plan-form')await saveSalaryPlan(form);
       } catch(error) { console.error('Aruvi form action failed.',error); toast(error.message||'That change could not be saved. Please try again.','error'); }
       finally { if(form.isConnected){delete form.dataset.submitting;submitButtons.forEach(button=>{if(button.isConnected){button.disabled=false;button.removeAttribute('aria-busy');}});} }
     });
@@ -3083,6 +3081,7 @@
       }
       const snapshot=JSON.stringify(state);state.settings.shakeQuickEntryEnabled=enabled;
       if(!(await persistMutation(snapshot,'Could not save the shake-to-entry setting. Your previous preference was restored.'))){renderSettingsSummary();syncShakeMotion();return;}
+      try{localStorage.setItem('aruvi-shake-quick-entry-v1',enabled?'1':'0');}catch(_){}
       syncShakeMotion();renderSettingsSummary();toast(enabled?'Shake to Quick Entry enabled. Shake twice while Aruvi is open.':'Shake to Quick Entry disabled.');
     });
     $('#interaction-feedback-setting')?.addEventListener('change',async event=>{
@@ -3294,8 +3293,7 @@
     if(!draft.amount){renderQuickAddStep('amount');toast('The copied data did not contain a valid amount. Enter it to continue.','amber');return;}
     if(!draft.type){renderQuickAddStep('type');toast('Choose Income, Expense or Refund to continue.','amber');return;}
     if(!draft.activityId){renderQuickAddStep('activity');toast('Choose the closest Aruvi category.','amber');return;}
-    renderQuickAddStep('note');
-    const noteInput=$('#quick-flow-note-value');if(noteInput)noteInput.value=draft.note;
+    renderQuickAddStep('activity');
   }
   function parseBankSms(raw){
     const text=String(raw||'').trim();if(!text)throw new Error('Copy a bank SMS first.');
@@ -3389,7 +3387,6 @@
     if(!clipboardPayload)throw new Error('The clipboard content is not a supported image or Aruvi Shortcut payload.');
     if(clipboardPayload.kind==='image'){
       transactionHaptic();
-      toast('Screenshot received. Starting on-device OCR…');
       await pwProcessPaymentImage(clipboardPayload.file,{shared:true});
       return;
     }
@@ -3671,10 +3668,10 @@
     if(file.size>15*1024*1024){toast('Choose an image smaller than 15 MB.','error');return false;}
     let progressElement=statusElement;
     if(shared){
-      openModal('Reading shared payment',`<div class="modal-body pw-share-progress"><div class="pw-share-progress-mark">${icon('receipt')}</div><p id="pw-share-ocr-progress" role="status" aria-live="polite">Preparing your screenshot for on-device OCR…</p><p class="fine-print">The image stays on this device. Only the extracted transaction fields will be shown.</p></div>`,'ON-DEVICE OCR');
+      openModal('Reading shared payment',`<div class="modal-body pw-share-progress"><div class="pw-share-progress-mark">${icon('receipt')}</div><p id="pw-share-ocr-progress" class="pw-ocr-status is-loading" role="status" aria-live="polite"><span class="pw-ocr-loader" aria-hidden="true"></span><span>Reading image…</span></p><p class="fine-print">The image stays on this device. Only the extracted transaction fields will be shown.</p></div>`,'IMAGE IMPORT');
       progressElement=$('#pw-share-ocr-progress');
     }
-    const setStatus=message=>{if(progressElement?.isConnected)progressElement.textContent=message;};
+    const setStatus=(message,loading=true)=>{if(!progressElement?.isConnected)return;if(loading){if(progressElement.classList.contains('is-loading'))return;progressElement.classList.add('is-loading');progressElement.innerHTML='<span class="pw-ocr-loader" aria-hidden="true"></span><span>Reading image…</span>';return;}progressElement.classList.remove('is-loading');progressElement.textContent=String(message||'');};
     try{
       setStatus('Preparing the screenshot locally…');
       const prepared=await pwPrepareOcrImage(file);
@@ -3707,13 +3704,13 @@
           parsed={amount:'',type:spatialFields?.direction==='incoming'?'income':'expense',date:today(),party:String(spatialFields?.party?.name||''),reference:utr||transactionId,referenceType:utr?'UTR':transactionId?'Transaction ID':'',utr,transactionId,upi:String(spatialFields?.upi?.id||''),upiProvider:String(spatialFields?.upi?.provider||''),sourceApp:String(spatialFields?.sourceApp?.name||''),accountSuffix:'',status:'unknown',confidence:0,needsReview:true,reviewReasons:['Amount was not confidently identified. Enter it manually.']};
         }else throw new Error(parsed.error);
       }
-      setStatus('Payment details extracted.');
+      setStatus('Payment details extracted.',false);
       pwReviewImport(parsed);
       return true;
     }catch(error){
       console.warn('Aruvi payment screenshot OCR failed.',error);
       const message=pwFriendlyOcrError(error);
-      if(shared){closeModal();pwShowImport(file,message);}else setStatus(message);
+      if(shared){closeModal();pwShowImport(file,message);}else setStatus(message,false);
       return false;
     }
   }
