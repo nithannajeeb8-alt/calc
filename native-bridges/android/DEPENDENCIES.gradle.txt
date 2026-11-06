@@ -1,0 +1,8 @@
+// Add these to the Android app module's dependencies block.
+// Bundled models are larger, but are available offline immediately after install.
+dependencies {
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+    implementation("com.google.mlkit:text-recognition-devanagari:16.0.1")
+}
+
+// Set minSdkVersion to at least 23 in the Android app module.
