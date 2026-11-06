@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pocketwise-shell-v2.4.66-aruvi-ux';
+const CACHE_NAME = 'pocketwise-shell-v2.4.67-aruvi-precision-ui';
 const PADDLE_RUNTIME_CACHE = 'pocketwise-paddle-runtime-v243';
 const PDF_RENDERER_URL = 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.14.0/dist/html2pdf.bundle.min.js';
 const IOS_PDF_RENDERER_URL = 'https://cdn.jsdelivr.net/npm/html3pdf@0.12.2/dist/html3pdf.bundle.min.js';

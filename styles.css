@@ -6038,210 +6038,207 @@ html[data-theme="gradient"] .pw-forecast-range-group > h3::after { border-color:
   .pw-forecast-range-group,.pw-forecast-window,.pw-forecast-pattern-actions button,.pw-forecast-pattern-edit button { transition: none!important; }
 }
 
+/* Aruvi 2.4.67 · precision layout system
+   One source of truth for form rhythm, alignment, modal density and touch sizes.
+   Keep 44px interactive hit areas; reduce visual bulk through padding and hierarchy. */
 
-/* Aruvi 2.4.65 · calm, essential-first transaction and account forms.
-   Existing app surfaces and theme tokens are reused; no new colour system is introduced. */
-.transaction-entry-form { gap: 13px; }
-.transaction-entry-form .transaction-entry-type { gap: 8px; }
-.transaction-entry-form .transaction-entry-label > span { letter-spacing: .085em; }
-.transaction-entry-form .type-switch { padding: 4px; gap: 4px; }
-.transaction-entry-form .type-switch button { display:flex; align-items:center; justify-content:center; gap:6px; min-height:44px; border-radius:11px; }
+/* Shared transaction and account field anatomy. */
+.transaction-entry-form { display:grid; gap:12px; padding-top:12px; }
+.transaction-entry-form .transaction-entry-type,
+.transaction-entry-section { display:grid; gap:8px; min-width:0; }
+.transaction-entry-form .transaction-entry-label { display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:0; }
+.transaction-entry-form .transaction-entry-label > span { color:var(--muted); font-size:11px; font-weight:750; letter-spacing:.075em; line-height:1.25; }
+.transaction-entry-form .transaction-entry-label small { color:var(--subtle); font-size:11px; line-height:1.35; text-align:right; }
+.transaction-entry-form .type-switch { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px; padding:4px; margin:0; }
+.transaction-entry-form .type-switch button { display:flex; min-width:0; min-height:46px; align-items:center; justify-content:center; gap:5px; padding:7px 3px; border-radius:10px; font-size:11px; line-height:1.15; white-space:nowrap; }
 .transaction-entry-form .type-switch button .icon-wrap { width:15px; height:15px; flex:0 0 15px; }
 .transaction-entry-form .type-switch button .icon-wrap i { font-size:14px; }
 .transaction-entry-form .type-switch button .icon-fallback { width:14px; height:14px; }
-.transaction-entry-form .transaction-amount-panel { padding:14px 16px 11px; }
-.transaction-entry-form .transaction-amount-field .amount-input { min-height:53px; }
+.transaction-entry-form .transaction-amount-panel { padding:12px 16px 8px; }
+.transaction-entry-form .transaction-amount-field .amount-input { min-height:52px; font-size:32px!important; }
+.transaction-entry-form .form-note { font-size:12px; line-height:1.5; }
 .transaction-essentials { display:grid; gap:8px; }
-.entry-field { display:grid; grid-template-columns:40px minmax(0,1fr); align-items:center; gap:11px; min-width:0; min-height:64px; box-sizing:border-box; padding:9px 13px; border:1px solid var(--line); border-radius:15px; background:var(--surface-2); color:var(--ink); cursor:text; }
-.entry-field:focus-within { border-color:var(--green); box-shadow:0 0 0 2px color-mix(in srgb,var(--green) 13%,transparent); }
-.entry-field-icon { display:grid; place-items:center; width:36px; height:36px; border-radius:12px; background:var(--surface-3); color:var(--green-deep); }
-.entry-field-icon .icon-wrap { display:grid; place-items:center; width:18px; height:18px; }
-.entry-field-icon .icon-wrap i { font-size:16px; }
-.entry-field-icon .icon-fallback { width:17px; height:17px; }
-.entry-field-copy { display:grid; gap:3px; min-width:0; }
-.entry-field-name { color:var(--muted); font-size:10px; font-weight:750; letter-spacing:.045em; line-height:1.2; }
-.entry-field-copy > input,.entry-field-copy > select { display:block; box-sizing:border-box; width:100%; max-width:100%; min-width:0; min-height:28px; margin:0; padding:1px 22px 1px 0; border:0; border-radius:0; outline:0; appearance:auto; background:transparent; color:var(--ink); font:600 14px/1.3 var(--font); box-shadow:none; }
-.entry-field-copy > input[type="date"] { min-height:30px; font-size:14px; }
+.entry-field { display:grid; grid-template-columns:34px minmax(0,1fr); align-items:center; gap:8px; min-width:0; min-height:56px; padding:8px 12px; box-sizing:border-box; border:1px solid var(--line); border-radius:14px; background:var(--surface-2); color:var(--ink); cursor:text; }
+.entry-field:focus-within { border-color:var(--green); box-shadow:0 0 0 2px color-mix(in srgb,var(--green) 12%,transparent); }
+.entry-field-icon { display:grid; place-items:center; width:32px; height:32px; border-radius:10px; background:var(--surface-3); color:var(--green-deep); }
+.entry-field-icon .icon-wrap { display:grid; place-items:center; width:17px; height:17px; }
+.entry-field-icon .icon-wrap i { font-size:15px; }
+.entry-field-icon .icon-fallback { width:16px; height:16px; }
+.entry-field-copy { display:grid; gap:4px; min-width:0; }
+.entry-field-name { color:var(--muted); font-size:11px; font-weight:650; letter-spacing:.025em; line-height:1.2; }
+.entry-field-copy > input,.entry-field-copy > select { display:block; width:100%; max-width:100%; min-width:0; min-height:27px; margin:0; padding:0 20px 0 0; box-sizing:border-box; border:0; border-radius:0; outline:0; appearance:auto; background:transparent; color:var(--ink); font:500 15px/1.3 var(--font); box-shadow:none; }
+.entry-field-copy > input[type="date"] { min-height:28px; font-size:15px; }
 .entry-field-copy > input:focus,.entry-field-copy > select:focus { outline:0; box-shadow:none; }
 .entry-field-copy > select { text-overflow:ellipsis; }
-.form-disclosure { min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:15px; background:var(--surface); }
-.form-disclosure > summary { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:54px; padding:10px 14px; cursor:pointer; list-style:none; }
+.entry-label-icon { display:inline-flex; align-items:center; vertical-align:middle; margin-right:5px; }
+.entry-label-icon .icon-wrap { width:14px; height:14px; }
+.entry-label-icon .icon-fallback { width:13px; height:13px; }
+
+/* Disclosure rows and secondary controls. */
+.form-disclosure { min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:14px; background:var(--surface); }
+.form-disclosure > summary { display:flex; min-height:48px; align-items:center; justify-content:space-between; gap:8px; padding:8px 12px; cursor:pointer; list-style:none; }
 .form-disclosure > summary::-webkit-details-marker { display:none; }
 .form-disclosure > summary::marker { content:""; }
-.disclosure-title { display:inline-flex; align-items:center; gap:9px; min-width:0; color:var(--ink); font-size:12px; font-weight:750; }
-.disclosure-title > .icon-wrap { display:grid; place-items:center; width:30px; height:30px; border-radius:10px; background:var(--surface-2); color:var(--green-deep); }
-.disclosure-title > .icon-wrap .icon-fallback { width:16px; height:16px; }
-.disclosure-hint { min-width:0; color:var(--muted); font-size:10px; line-height:1.3; text-align:right; }
-.form-disclosure > summary::after { content:"+"; display:grid; place-items:center; flex:0 0 25px; width:25px; height:25px; border-radius:50%; background:var(--surface-2); color:var(--muted); font-size:17px; line-height:1; }
+.disclosure-title { display:inline-flex; flex:1 1 auto; min-width:0; align-items:center; gap:8px; color:var(--ink); font-size:12px; font-weight:700; line-height:1.25; }
+.disclosure-title > .icon-wrap { display:grid; flex:0 0 28px; place-items:center; width:28px; height:28px; border-radius:9px; background:var(--surface-2); color:var(--green-deep); }
+.disclosure-title > .icon-wrap .icon-fallback { width:15px; height:15px; }
+.disclosure-hint { flex:0 1 auto; max-width:39%; min-width:0; color:var(--muted); font-size:11px; line-height:1.3; text-align:right; overflow-wrap:anywhere; }
+.form-disclosure > summary::after { content:"+"; display:grid; flex:0 0 24px; place-items:center; width:24px; height:24px; border-radius:50%; background:var(--surface-2); color:var(--muted); font-size:16px; line-height:1; }
 .form-disclosure[open] > summary::after { content:"−"; }
-.disclosure-content { display:grid; gap:13px; padding:0 14px 15px; }
-.disclosure-content .form-field label { font-size:10px; letter-spacing:.04em; }
-.disclosure-content .form-field input,.disclosure-content .form-field select,.disclosure-content .form-field textarea { min-height:46px; font-size:14px; }
-.disclosure-content .form-field textarea { min-height:78px; }
+.disclosure-content { display:grid; gap:12px; padding:0 12px 12px; }
+.disclosure-content .form-field label { font-size:11px; letter-spacing:.025em; line-height:1.3; }
+.disclosure-content .form-field input,.disclosure-content .form-field select,.disclosure-content .form-field textarea { min-height:44px; font-size:15px; }
+.disclosure-content .form-field textarea { min-height:76px; }
 .disclosure-content .receipt-picker-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
-.disclosure-content .receipt-picker-actions button { display:flex; align-items:center; justify-content:center; gap:7px; min-height:46px; padding:9px; font-size:11px; }
+.disclosure-content .receipt-picker-actions button { display:flex; min-height:44px; align-items:center; justify-content:center; gap:7px; padding:8px; font-size:11px; line-height:1.25; }
 .disclosure-content .receipt-picker-actions .icon-wrap { width:16px; height:16px; }
 .disclosure-content .receipt-picker-actions .icon-fallback { width:15px; height:15px; }
-.voice-draft-action { display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px; }
-.transaction-entry-actions { grid-template-columns:minmax(0,1fr) minmax(0,1.5fr); align-items:center; gap:8px; }
-.transaction-entry-actions > button { min-height:46px; }
+.voice-draft-action { display:flex; min-height:44px; align-items:center; justify-content:center; gap:8px; }
+.transaction-entry-actions { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.45fr); align-items:center; gap:8px; margin-top:2px; }
+.transaction-entry-actions > button { min-height:44px; }
 .transaction-entry-actions button[type="submit"][value="save"] { grid-column:auto; }
-.transaction-entry-actions .transaction-save-another { grid-column:1/-1; justify-self:center; min-height:36px; padding:7px 12px; }
-.account-manager { display:grid; gap:16px; }
-.account-list-heading,.account-create-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
-.account-list-heading > div,.account-create-heading > div { display:grid; gap:3px; min-width:0; }
-.account-list-heading strong,.account-create-heading strong { color:var(--ink); font-size:13px; }
-.account-list-heading small,.account-create-heading small { color:var(--muted); font-size:10px; line-height:1.4; }
-.account-count-icon,.account-create-icon { display:grid; place-items:center; flex:0 0 38px; width:38px; height:38px; border-radius:13px; background:var(--green-soft); color:var(--green-deep); }
-.account-count-icon .icon-wrap,.account-create-icon .icon-wrap { width:19px; height:19px; }
-.account-entity-list { gap:8px; }
-.account-entity-row { min-width:0; gap:9px; padding:11px; }
-.account-entity-row .transaction-icon { width:40px; height:40px; flex:0 0 40px; }
-.account-entity-row .entity-copy { flex:1 1 auto; }
-.account-entity-row .entity-value { max-width:100px; overflow-wrap:anywhere; font-size:12px; }
-.account-entity-row .entity-actions { gap:6px; }
-.account-entity-row .mini-button { width:44px; min-width:44px; height:44px; border-radius:12px; }
-.account-entity-row .mini-button .icon-wrap { width:17px; height:17px; }
-.account-create-section { display:grid; gap:13px; padding:15px; border:1px solid var(--line); border-radius:18px; background:var(--surface-2); }
+.transaction-entry-actions .transaction-save-another { grid-column:1/-1; justify-self:center; min-height:44px; padding:7px 12px; }
+
+/* List-first management surfaces. */
+.account-manager,.activity-manager,.reminder-manager,.rule-manager { display:grid; gap:12px; }
+.account-list-heading,.account-create-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+ .account-list-heading > div,.account-create-heading > div { display:grid; gap:4px; min-width:0; }
+.account-list-heading strong,.account-create-heading strong { color:var(--ink); font-size:13px; line-height:1.3; }
+.account-list-heading small,.account-create-heading small { color:var(--muted); font-size:11px; line-height:1.4; }
+.account-count-icon,.account-create-icon { display:grid; flex:0 0 36px; place-items:center; width:36px; height:36px; border-radius:11px; background:var(--green-soft); color:var(--green-deep); }
+.account-count-icon .icon-wrap,.account-create-icon .icon-wrap { width:18px; height:18px; }
+.account-entity-list,.rule-manager .entity-list { display:grid; gap:8px; }
+.account-entity-row { min-width:0; align-items:center; gap:8px; padding:8px; }
+.account-entity-row .transaction-icon { flex:0 0 36px; width:36px; height:36px; border-radius:11px; }
+.account-entity-row .entity-copy { flex:1 1 auto; min-width:0; }
+.account-entity-row .entity-copy strong { font-size:12px; line-height:1.3; }
+.account-entity-row .entity-copy small { margin-top:3px; font-size:11px; line-height:1.3; }
+.account-entity-row .entity-value { flex:0 1 auto; max-width:92px; overflow-wrap:anywhere; font-size:12px; line-height:1.25; text-align:right; }
+.account-entity-row .entity-actions { flex:0 0 auto; gap:4px; }
+.account-entity-row .mini-button,.activity-manager .mini-button,.reminder-manager .mini-button,.rule-manager .mini-button { display:inline-grid; flex:0 0 44px; place-items:center; width:44px; min-width:44px; min-height:44px; height:44px; border-radius:11px; }
+.account-entity-row .mini-button .icon-wrap,.activity-manager .mini-button .icon-wrap,.reminder-manager .mini-button .icon-wrap { width:17px; height:17px; }
+.account-create-section { display:grid; gap:12px; padding:12px; border:1px solid var(--line); border-radius:16px; background:var(--surface-2); }
 .account-create-heading { justify-content:flex-start; }
-.account-create-form { display:grid; gap:9px; }
+.account-create-form,.account-edit-form { display:grid; gap:8px; }
 .account-create-form .entry-field { background:var(--surface); }
 .account-create-form .form-disclosure { background:var(--surface); }
 .account-create-actions { margin-top:2px; }
-.account-create-actions .primary-button { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:48px; }
-.account-create-actions .icon-wrap { width:16px; height:16px; }
+.account-create-actions .primary-button,.account-open-create,.activity-open-create,.reminder-open-create,.rule-open-create { display:flex; width:100%; min-height:44px; align-items:center; justify-content:center; gap:8px; }
+.account-create-actions .primary-button { min-height:46px; }
+.account-create-actions .icon-wrap,.account-open-create .icon-wrap,.activity-open-create .icon-wrap,.reminder-open-create .icon-wrap,.rule-open-create .icon-wrap { width:16px; height:16px; }
 .account-manager-done { margin-top:0; }
-.account-edit-form { display:grid; gap:13px; }
 .account-edit-form .entry-field { background:var(--surface-2); }
 .account-edit-form .form-actions { margin-top:2px; }
-.entry-label-icon { display:inline-flex; vertical-align:middle; margin-right:5px; }
-.entry-label-icon .icon-wrap { width:14px; height:14px; }
-.entry-label-icon .icon-fallback { width:13px; height:13px; }
-@media (max-width:520px) {
-  .transaction-entry-form { gap:11px; padding:14px 16px 18px; }
-  .transaction-entry-form .type-switch button { flex-direction:column; gap:3px; min-height:52px; padding:7px 3px; font-size:10px; }
-  .transaction-entry-form .type-switch button .icon-wrap { width:14px; height:14px; }
-  .transaction-entry-form .transaction-amount-panel { padding:12px 14px 10px; }
-  .entry-field { min-height:61px; grid-template-columns:37px minmax(0,1fr); padding:8px 11px; }
-  .entry-field-icon { width:34px; height:34px; }
-  .disclosure-hint { font-size:9px; }
-  .disclosure-content { padding-inline:12px; }
-  .account-create-section { padding:13px; }
-  .account-entity-row { gap:7px; padding:9px; }
-  .account-entity-row .transaction-icon { width:35px; height:35px; flex-basis:35px; }
-  .account-entity-row .entity-value { max-width:80px; font-size:11px; }
-  .account-entity-row .entity-actions { gap:4px; }
-  .account-entity-row .mini-button { width:40px; min-width:40px; height:40px; }
-  .transaction-entry-actions { grid-template-columns:minmax(0,1fr) minmax(0,1.45fr); }
-}
-@media (prefers-reduced-motion:reduce) {
-  .entry-field:focus-within { transition:none!important; }
-}
-
-.account-form-intro { margin:0 0 4px; color:var(--muted); font-size:12px; line-height:1.5; }
-.account-open-create { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:49px; }
-.account-open-create .icon-wrap { width:16px; height:16px; }
-@media (max-width:520px) { .account-open-create { min-height:48px; } }
-
-
-/* Aruvi 2.4.66 · form clarity and touch ergonomics.
-   This layer is intentionally additive: existing layout tokens, themes and components remain the source of truth. */
-.transaction-entry-form .type-switch { grid-template-columns:repeat(4,minmax(0,1fr)); }
-.transaction-entry-form .type-switch button { min-width:0; min-height:48px; padding:8px 4px; }
-.transaction-entry-form .type-switch button > span:not(.icon-wrap) { white-space:nowrap; }
-.entry-field-name { font-size:12px; letter-spacing:.025em; }
-.entry-field-copy > input,
-.entry-field-copy > select,
-.entry-field-copy > input[type="date"] { min-height:30px; font-size:16px; line-height:1.35; }
-.disclosure-title { font-size:13px; }
-.disclosure-hint { font-size:11px; }
-.disclosure-content .form-field label,
-.budget-entry-form .form-field label,
-.activity-filter-form .form-field label,
-.debt-form .form-field label,
-.goal-form .form-field label,
-.reminder-create-form .form-field label { font-size:12px; }
-.disclosure-content .form-field input,
-.disclosure-content .form-field select,
-.disclosure-content .form-field textarea,
-.budget-entry-form .form-field input,
-.budget-entry-form .form-field textarea,
-.activity-filter-form .form-field input,
-.activity-filter-form .form-field select,
-.debt-form .form-field input,
-.debt-form .form-field select,
-.debt-form .form-field textarea,
-.goal-form .form-field input,
-.goal-form .form-field select,
-.reminder-create-form .form-field input,
-.reminder-create-form .form-field select { min-height:46px; font-size:16px; }
-.transaction-entry-form .transaction-amount-field .amount-input { font-size:34px!important; }
-.transaction-entry-form .form-note { font-size:12px; }
-.transaction-entry-actions > button { min-height:48px; }
-.transaction-entry-actions .transaction-save-another { min-height:44px; }
-.account-manager,.activity-manager,.reminder-manager { display:grid; gap:14px; }
-.account-entity-row .mini-button,
-.activity-manager .mini-button,
-.reminder-manager .mini-button { width:44px; min-width:44px; min-height:44px; height:44px; border-radius:12px; }
-.account-entity-row .mini-button .icon-wrap,
-.activity-manager .mini-button .icon-wrap,
-.reminder-manager .mini-button .icon-wrap { width:18px; height:18px; }
-.account-open-create,.activity-open-create,.reminder-open-create { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:48px; }
-.activity-create-form,.reminder-create-form,.activity-filter-form,.budget-entry-form,.debt-form,.goal-form { display:grid; gap:12px; }
+.account-form-intro { margin:0 0 2px; color:var(--muted); font-size:12px; line-height:1.45; }
+.activity-create-form,.reminder-create-form,.activity-filter-form,.budget-entry-form,.debt-form,.goal-form,.rule-create-form { display:grid; gap:12px; }
 .activity-create-form .entry-field,.reminder-create-form .entry-field,.activity-filter-form .entry-field,.debt-form .entry-field,.goal-form .entry-field { background:var(--surface-2); }
-.activity-create-form .form-actions,.reminder-create-form .form-actions,.activity-filter-form .form-actions,.budget-entry-form .form-actions,.debt-form .form-actions,.goal-form .form-actions { margin-top:4px; }
-.activity-create-form .form-actions button,.reminder-create-form .form-actions button,.activity-filter-form .form-actions button,.budget-entry-form .form-actions button,.debt-form .form-actions button,.goal-form .form-actions button { min-height:46px; }
-.reminder-autopost-option { display:flex; align-items:flex-start; gap:10px; min-height:44px; padding:11px 12px; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); color:var(--ink); font-size:13px; line-height:1.45; }
+.activity-create-form .form-actions,.reminder-create-form .form-actions,.activity-filter-form .form-actions,.budget-entry-form .form-actions,.debt-form .form-actions,.goal-form .form-actions { margin-top:3px; }
+.activity-filter-form .form-grid { grid-template-columns:minmax(0,1fr); }
+.rule-manager .mini-button { border-radius:11px; }
+.finance-allocation-details .disclosure-content { display:grid; gap:11px; }
+.finance-no-allocation { margin:0; padding:12px; border:1px solid var(--line); border-radius:11px; background:var(--surface-2); line-height:1.45; }
+.finance-salary-form .form-disclosure > summary { min-height:48px; }
+.reminder-autopost-option { display:flex; min-height:44px; align-items:flex-start; gap:8px; padding:8px 12px; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); color:var(--ink); font-size:13px; line-height:1.4; }
 .reminder-autopost-option input { flex:0 0 18px; width:18px; height:18px; margin:1px 0 0; accent-color:var(--green); }
-.budget-total-panel { padding:14px; }
-.budget-total-panel .amount-input { font-size:31px!important; }
-.budget-category-list { display:grid; gap:10px; }
-.budget-category-field { padding:11px; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); }
-.budget-category-field .form-field-label-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.budget-total-panel { padding:12px; }
+.budget-total-panel .amount-input { font-size:30px!important; }
+.budget-category-list { display:grid; gap:8px; }
+.budget-category-field { padding:12px; border:1px solid var(--line); border-radius:11px; background:var(--surface-2); }
+.budget-category-field .form-field-label-row { display:flex; align-items:center; justify-content:space-between; gap:10px; }
 .budget-category-field .form-field-label-row label { margin:0; }
 .budget-category-field input { background:var(--surface)!important; }
-.activity-filter-form .form-grid { grid-template-columns:minmax(0,1fr); }
-.account-form-intro { font-size:13px; line-height:1.55; }
-.form-disclosure > summary { min-height:56px; }
-.form-disclosure:focus-within { border-color:color-mix(in srgb,var(--green) 55%,var(--line)); }
-.form-disclosure > summary:focus-visible,
-.entry-field:focus-within,
-.account-manager button:focus-visible,
-.activity-manager button:focus-visible,
-.reminder-manager button:focus-visible { outline:2px solid var(--green); outline-offset:2px; }
-@media(max-width:520px) {
-  .transaction-entry-form .type-switch { grid-template-columns:repeat(4,minmax(0,1fr)); }
-  .transaction-entry-form .type-switch button { min-height:54px; padding:7px 2px; font-size:11px; }
-  .entry-field-name { font-size:12px; }
-  .entry-field-copy > input,.entry-field-copy > select,.entry-field-copy > input[type="date"] { font-size:16px; }
-  .disclosure-title { font-size:13px; }
-  .disclosure-hint { font-size:10px; }
-  .account-entity-row .mini-button { width:44px; min-width:44px; height:44px; }
-  .activity-filter-form .form-grid,.budget-category-list { grid-template-columns:minmax(0,1fr); }
-  .account-entity-row { gap:6px; padding:8px; }
-  .account-entity-row .transaction-icon { width:35px; height:35px; flex-basis:35px; }
-  .account-entity-row .entity-value { max-width:72px; font-size:11px; }
+.form-disclosure:focus-within { border-color:color-mix(in srgb,var(--green) 48%,var(--line)); }
+.form-disclosure > summary:focus-visible,.entry-field:focus-within,.account-manager button:focus-visible,.activity-manager button:focus-visible,.reminder-manager button:focus-visible { outline:2px solid var(--green); outline-offset:2px; }
+
+/* Consistent modal and form alignment across themes and screen sizes. */
+.modal-head { align-items:center; gap:12px; }
+.modal-head > div { display:grid; gap:4px; }
+.modal-head h2 { margin:0; line-height:1.2; letter-spacing:-.55px; }
+.modal-head .icon-button { flex:0 0 44px; width:44px; height:44px; border-radius:13px; }
+.modal-body .form-field { gap:4px; }
+.modal-body .form-field label { font-size:11px; line-height:1.3; }
+.modal-body .form-grid { gap:12px; }
+.modal-body .form-actions { gap:8px; margin-top:16px; }
+.modal-body .form-actions > button { min-height:44px; }
+.modal-body .form-field input,.modal-body .form-field select,.modal-body .form-field textarea { min-height:44px; padding:10px 12px; }
+.modal-body .form-field textarea { min-height:76px; }
+
+@media (max-width:720px) {
+  .main-content { padding-left:16px; padding-right:16px; padding-bottom:calc(86px + env(safe-area-inset-bottom)); }
+  .topbar { margin-left:-16px; margin-right:-16px; margin-bottom:18px; padding:12px 16px 16px; }
+  .mobile-brand { margin-bottom:15px; font-size:13px; }
+  .page-heading h1 { font-size:24px; line-height:1.18; letter-spacing:-.9px; }
+  .hero-grid,.home-lower-grid,.bottom-home-grid { gap:10px; }
+  .page .card { padding:16px; border-radius:18px; }
+  .page .money-card { padding:18px 16px 16px; }
+  .section-header { gap:10px; margin-bottom:12px; }
+  .quick-actions-row { gap:8px; margin:11px 0; }
+  .app-modal { width:calc(100% - 28px); max-width:560px; max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); border-radius:22px; }
+  .app-modal[open] { margin:auto; }
+  .modal-head { padding:16px 16px 12px; }
+  .modal-head h2 { font-size:21px; }
+  .modal-head .icon-button { flex-basis:44px; width:44px; height:44px; }
+  #modal-content > .modal-body { padding:16px; padding-bottom:calc(16px + env(safe-area-inset-bottom,0px)); }
+  .modal-body .form-grid { grid-template-columns:minmax(0,1fr); gap:12px; }
+  .modal-body .form-field { gap:5px; }
+  .modal-body .form-field label { font-size:11px; }
+  .modal-body .form-field input,.modal-body .form-field select,.modal-body .form-field textarea { min-height:44px; padding:9px 11px; font-size:16px!important; }
+  .modal-body .form-field textarea { min-height:76px; }
+  .modal-body .form-actions { margin-top:13px; }
+  .modal-body .form-actions > button { min-height:44px; }
+  .amount-input { min-height:52px!important; font-size:30px!important; }
+  .transaction-entry-form { gap:10px; padding-top:10px; }
+  .transaction-entry-form .transaction-amount-panel { padding:12px 12px 8px; }
+  .transaction-entry-form .transaction-amount-field .amount-input { min-height:50px; font-size:31px!important; }
+  .transaction-entry-form .type-switch { gap:4px; padding:4px; }
+  .transaction-entry-form .type-switch button { flex-direction:column; gap:3px; min-height:48px; padding:6px 2px; font-size:11px; }
+  .transaction-entry-form .type-switch button .icon-wrap { width:14px; height:14px; }
+  .entry-field { grid-template-columns:32px minmax(0,1fr); min-height:56px; gap:8px; padding:8px 12px; border-radius:13px; }
+  .entry-field-icon { width:30px; height:30px; border-radius:9px; }
+  .entry-field-name { font-size:11px; }
+  .entry-field-copy > input,.entry-field-copy > select,.entry-field-copy > input[type="date"] { min-height:27px; font-size:16px; line-height:1.3; }
+  .transaction-essentials { gap:8px; }
+  .form-disclosure > summary { min-height:48px; padding:8px 12px; gap:8px; }
+  .disclosure-title { font-size:12px; gap:7px; }
+  .disclosure-title > .icon-wrap { flex-basis:26px; width:26px; height:26px; }
+  .disclosure-hint { max-width:38%; font-size:11px; }
+  .disclosure-content { gap:12px; padding:0 12px 12px; }
+  .disclosure-content .form-field input,.disclosure-content .form-field select,.disclosure-content .form-field textarea { min-height:44px; font-size:16px!important; }
+  .disclosure-content .form-field textarea { min-height:76px; }
+  .transaction-entry-actions { grid-template-columns:minmax(0,1fr) minmax(0,1.4fr); gap:8px; }
+  .transaction-entry-actions > button,.transaction-entry-actions .transaction-save-another { min-height:44px; }
+  .account-manager,.activity-manager,.reminder-manager,.rule-manager { gap:12px; }
+  .account-create-section { gap:12px; padding:12px; border-radius:14px; }
+  .account-create-form,.account-edit-form { gap:8px; }
+  .account-entity-row { gap:8px; padding:8px; }
+  .account-entity-row .transaction-icon { flex-basis:34px; width:34px; height:34px; }
+  .account-entity-row .entity-value { max-width:78px; font-size:11px; }
   .account-entity-row .entity-actions { gap:4px; }
-  .transaction-entry-actions { grid-template-columns:minmax(0,1fr) minmax(0,1.45fr); }
-}
-
-/* Aruvi 2.4.66 · list-first local rules and salary plan disclosures. */
-.rule-manager,.rule-create-form { display:grid; gap:14px; }
-.rule-manager .entity-list { display:grid; gap:8px; }
-.rule-manager .mini-button { width:44px; min-width:44px; height:44px; border-radius:12px; }
-.rule-open-create { display:flex; align-items:center; justify-content:center; gap:8px; min-height:48px; width:100%; }
-.rule-open-create .icon-wrap { width:16px; height:16px; }
-.finance-allocation-details .disclosure-content { display:grid; gap:12px; }
-.finance-no-allocation { margin:0; padding:12px; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); line-height:1.5; }
-.finance-salary-form .form-disclosure > summary { min-height:54px; }
-@media(max-width:520px) {
+  .account-entity-row .mini-button,.activity-manager .mini-button,.reminder-manager .mini-button,.rule-manager .mini-button { flex-basis:44px; width:44px; min-width:44px; min-height:44px; height:44px; }
+  .account-open-create,.activity-open-create,.reminder-open-create,.rule-open-create { min-height:44px; }
+  .activity-filter-form .form-grid,.budget-category-list { grid-template-columns:minmax(0,1fr); }
+  .activity-create-form,.reminder-create-form,.activity-filter-form,.budget-entry-form,.debt-form,.goal-form,.rule-create-form { gap:12px; }
+  .budget-total-panel { padding:12px; }
+  .budget-category-field { padding:8px; }
   .finance-salary-form .finance-pay-grid { grid-template-columns:minmax(0,1fr); }
-  .rule-manager .mini-button { width:44px; min-width:44px; height:44px; }
+  .rule-manager .entity-list { gap:8px; }
 }
 
-/* iOS form ergonomics: keep standard editable controls at a readable size on phones. */
-@media(max-width:520px) {
-  .modal-body form input:not(.amount-input):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]),
-  .modal-body form select,
-  .modal-body form textarea { font-size:16px !important; }
+@media (max-width:390px) {
+  .main-content { padding-left:12px; padding-right:12px; }
+  .topbar { margin-left:-12px; margin-right:-12px; padding-left:12px; padding-right:12px; }
+  .page .card { padding:14px; }
+  .page .money-card { padding:17px 13px 15px; }
+  .app-modal { width:calc(100% - 20px); }
+  .modal-head { padding:12px; }
+  #modal-content > .modal-body { padding:12px; padding-bottom:calc(12px + env(safe-area-inset-bottom,0px)); }
+  .account-entity-row { gap:4px; padding:8px; }
+  .account-entity-row .entity-value { max-width:68px; font-size:11px; }
+  .account-entity-row .entity-actions { gap:4px; }
+  .account-entity-row .mini-button { flex-basis:44px; width:44px; min-width:44px; height:44px; }
+  .transaction-entry-form .type-switch button { font-size:11px; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .entry-field:focus-within { transition:none!important; }
 }

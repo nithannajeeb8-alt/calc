@@ -40,7 +40,7 @@
       var count = 6 + index;
       var delay = (FIRST_DELAY_MS + index * STAGGER_MS) / 1000;
       var column = document.createElement('span');
-      column.className = 'pw-char ' + (index < 6 ? 'pw-light' : 'pw-bold');
+      column.className = 'pw-char';
       column.setAttribute('data-count', String(count));
       column.style.setProperty('--pw-count', String(count));
       column.style.setProperty('--pw-delay', delay.toFixed(3) + 's');
@@ -99,14 +99,11 @@
 
     if (reducedMotion) { startAnimation(); return; }
 
-    // Wait for both requested type weights when possible. Offline or blocked
+    // Wait for the requested semibold face when possible. Offline or blocked
     // font requests fall back to the local stack after 700ms, without hanging.
     var fontReady = (document.fonts && document.fonts.load)
       ? Promise.race([
-          Promise.all([
-            document.fonts.load('300 1em "Bricolage Grotesque"'),
-            document.fonts.load('800 1em "Bricolage Grotesque"')
-          ]).catch(function () {}),
+          document.fonts.load('600 1em "Bricolage Grotesque"').catch(function () {}),
           new Promise(function (resolve) { window.setTimeout(resolve, 700); })
         ])
       : Promise.resolve();
