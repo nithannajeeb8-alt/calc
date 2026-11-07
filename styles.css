@@ -6937,3 +6937,45 @@ html[data-theme="gradient"] #page-activity #activity-filters { justify-content:f
 .pw-tour-card p,.pw-tour-card small{color:var(--muted)!important}
 html[data-theme="gradient"] .pw-tour-card{background:linear-gradient(145deg,#fff 0%,color-mix(in srgb,var(--gradient-accent-soft) 28%,#fff) 100%)!important;color:#1d2a21!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 @media(max-width:720px){.recent-grocery-list{padding:10px}.recent-activity-row{min-height:58px}.goal-pill-footer{gap:7px}.goal-pill-footer .text-button{margin-left:auto}.goal-contribution-summary{padding:11px}.goal-contribution-amount input{min-height:49px;font-size:31px}}
+
+/* Multi-item Indian household shopping list */
+.shopping-list-pill-row{display:flex;align-items:stretch;gap:8px;margin:0 0 10px}
+.shopping-list-pill{display:flex;align-items:center;gap:10px;flex:1;min-width:0;min-height:62px;padding:9px 12px;text-align:left;border:1px solid color-mix(in srgb,var(--green) 22%,var(--line));border-radius:17px;background:color-mix(in srgb,var(--green-soft) 66%,var(--surface));color:var(--ink);cursor:pointer;transition:border-color .16s ease,transform .16s ease,background .16s ease}
+.shopping-list-pill:hover{border-color:color-mix(in srgb,var(--green) 48%,var(--line));transform:translateY(-1px)}
+.shopping-list-pill-icon{display:grid;place-items:center;width:39px;height:39px;flex:none;border-radius:14px;background:var(--surface);color:var(--green)}
+.shopping-list-pill-copy{display:grid;gap:4px;min-width:0;flex:1}
+.shopping-list-pill-copy strong{font-size:12px}
+.shopping-list-pill-copy small{font-size:10px;color:var(--muted)}
+.shopping-list-pill-count{display:grid;place-items:center;min-width:29px;height:29px;padding:0 8px;border-radius:999px;background:var(--surface);color:var(--green-deep);font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
+.shopping-list-pill-chevron{color:var(--muted);font-size:17px;padding:0 3px}
+.shopping-list-add{display:grid;place-items:center;align-self:center;width:43px;height:43px;flex:none;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--green)}
+.shopping-list-add:hover{background:var(--green-soft)}
+.recent-grocery-list{display:grid;gap:7px;margin:0 0 11px;padding:10px;border:1px solid color-mix(in srgb,var(--green) 19%,var(--line));border-radius:17px;background:color-mix(in srgb,var(--green-soft) 36%,var(--surface))}
+.recent-grocery-row{display:flex;align-items:center;gap:10px;min-height:49px;padding:7px 9px;background:var(--surface);border:1px solid var(--line);border-radius:13px}
+.shopping-list-empty{display:grid;justify-items:center;gap:6px;padding:13px 8px;text-align:center}
+.shopping-list-empty>span{display:grid;place-items:center;width:36px;height:36px;border-radius:13px;background:var(--green-soft);color:var(--green)}
+.shopping-list-empty strong{font-size:12px}
+.shopping-list-empty small{font-size:10px;color:var(--muted)}
+.shopping-list-empty .text-button{margin-top:2px}
+.grocery-item-form{display:grid;gap:13px}
+.grocery-form-intro{display:flex;align-items:center;gap:11px;padding:12px;border-radius:15px;background:var(--green-soft)}
+.grocery-form-icon{display:grid;place-items:center;width:39px;height:39px;flex:none;border-radius:13px;background:var(--surface);color:var(--green)}
+.grocery-form-intro>div{display:grid;gap:4px;min-width:0}
+.grocery-form-intro strong{font-size:13px}
+.grocery-form-intro small{font-size:10px;line-height:1.45;color:var(--muted)}
+.grocery-entries{display:grid;gap:9px;max-height:min(47dvh,390px);overflow:auto;padding:1px 3px 1px 1px;overscroll-behavior:contain}
+.grocery-entry-row{display:grid;grid-template-columns:minmax(0,1fr) 88px 34px;align-items:end;gap:8px;padding:10px;border:1px solid var(--line);border-radius:15px;background:var(--surface-2)}
+.grocery-product-field{grid-column:1/-1}
+.grocery-entry-row>label{display:grid;gap:5px;min-width:0}
+.grocery-entry-row>label>span{font-size:9px;font-weight:800;letter-spacing:.07em;color:var(--muted)}
+.grocery-entry-row input,.grocery-entry-row select{width:100%;min-width:0;height:40px;padding:0 9px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--ink);font:600 12px var(--font)}
+.grocery-entry-row input:focus,.grocery-entry-row select:focus{outline:2px solid color-mix(in srgb,var(--green) 35%,transparent);border-color:var(--green)}
+.grocery-row-remove{display:grid;place-items:center;width:34px;height:40px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--muted)}
+.grocery-row-remove:disabled{opacity:.35;cursor:not-allowed}
+.grocery-add-row{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;min-height:42px;border:1px dashed color-mix(in srgb,var(--green) 45%,var(--line));border-radius:13px;background:transparent;color:var(--green-deep);font-size:11px;font-weight:750}
+.grocery-add-row:hover{background:var(--green-soft)}
+.grocery-item-form .form-actions{position:sticky;bottom:0;margin:0;padding-top:10px;background:var(--surface)}
+@media(max-width:720px){.shopping-list-pill{min-height:58px;padding:8px 10px}.shopping-list-pill-icon{width:36px;height:36px}.grocery-entry-row{grid-template-columns:minmax(0,1fr) 82px 32px;gap:6px;padding:8px}.grocery-entry-row input,.grocery-entry-row select{height:39px;padding:0 7px;font-size:11px}.grocery-row-remove{width:32px;height:39px}.grocery-entries{max-height:42dvh}.grocery-item-form .form-actions .secondary-button,.grocery-item-form .form-actions .primary-button{flex:1;min-width:0;padding-inline:9px}}
+@media(max-width:360px){.grocery-entry-row{grid-template-columns:minmax(0,1fr) 76px 30px;gap:5px;padding:7px}.grocery-entry-row>label>span{font-size:8px}.grocery-entry-row input,.grocery-entry-row select{padding:0 5px;font-size:10px}.grocery-row-remove{width:30px}}
+html[data-theme="gradient"] .shopping-list-pill{background:linear-gradient(145deg,rgba(255,255,255,.92),color-mix(in srgb,var(--gradient-accent-soft) 24%,#fff));border-color:var(--glass-border);color:#1d2a21}
+html[data-theme="gradient"] .recent-grocery-list{background:rgba(255,255,255,.78);border-color:rgba(255,255,255,.8)}
