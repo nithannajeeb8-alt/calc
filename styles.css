@@ -6979,3 +6979,107 @@ html[data-theme="gradient"] .pw-tour-card{background:linear-gradient(145deg,#fff
 @media(max-width:360px){.grocery-entry-row{grid-template-columns:minmax(0,1fr) 76px 30px;gap:5px;padding:7px}.grocery-entry-row>label>span{font-size:8px}.grocery-entry-row input,.grocery-entry-row select{padding:0 5px;font-size:10px}.grocery-row-remove{width:30px}}
 html[data-theme="gradient"] .shopping-list-pill{background:linear-gradient(145deg,rgba(255,255,255,.92),color-mix(in srgb,var(--gradient-accent-soft) 24%,#fff));border-color:var(--glass-border);color:#1d2a21}
 html[data-theme="gradient"] .recent-grocery-list{background:rgba(255,255,255,.78);border-color:rgba(255,255,255,.8)}
+
+.shortcut-link-button,.shortcut-guide-link{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.3;white-space:normal;overflow-wrap:anywhere;min-width:0;max-width:100%;padding:11px 15px}
+.shortcuts-settings-card .shortcut-setting-actions{width:100%;justify-content:flex-start}
+.shortcuts-settings-card .setting-row>button,
+.shortcuts-settings-card .setting-row>a{align-self:flex-start;text-align:center;justify-content:center}
+.shortcut-help-guide{display:grid;gap:13px}
+.shortcut-guide-intro{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+.shortcut-guide-block{display:grid;gap:12px;min-width:0;padding:14px;border:1px solid var(--line);border-radius:17px;background:var(--surface-2)}
+.shortcut-guide-heading{display:flex;align-items:center;gap:10px;min-width:0}
+.shortcut-guide-heading>div{display:grid;gap:4px;min-width:0}
+.shortcut-guide-heading strong{font-size:13px;line-height:1.35}
+.shortcut-guide-heading small{font-size:10px;line-height:1.45;color:var(--muted)}
+.shortcut-guide-icon{display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:13px;background:var(--green-soft);color:var(--green)}
+.shortcut-guide-steps{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.shortcut-guide-steps li{display:grid;grid-template-columns:25px minmax(0,1fr);align-items:start;gap:9px}
+.shortcut-guide-steps li>span{display:grid;place-items:center;width:24px;height:24px;border-radius:9px;background:var(--green-soft);color:var(--green-deep);font-size:10px;font-weight:800}
+.shortcut-guide-steps li>div{display:grid;gap:3px;min-width:0}
+.shortcut-guide-steps li strong{font-size:11px;line-height:1.35}
+.shortcut-guide-steps li small{font-size:10px;line-height:1.5;color:var(--muted);overflow-wrap:anywhere}
+.shortcut-guide-link{justify-self:start}
+.shortcut-guide-privacy{margin:0;color:var(--muted);font-size:10px;line-height:1.5}
+@media(max-width:720px){
+  .settings-layout .setting-row:has(>label.switch){gap:12px;align-items:center}
+  .interaction-feedback-options .setting-row:has(>label.switch),.shake-quick-entry-row:has(>label.switch){align-items:center;flex-direction:row}
+  .shortcuts-settings-card .setting-row{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+  .shortcuts-settings-card .setting-row>button,.shortcuts-settings-card .setting-row>a{align-self:flex-start;max-width:100%;margin:0}
+  .shortcuts-settings-card .shortcut-setting-actions{width:100%;margin:0;justify-content:flex-start}
+  .shortcut-help-guide{gap:11px}
+  .shortcut-guide-block{padding:12px;gap:10px}
+}
+html[data-theme="gradient"] .shortcut-guide-block{background:linear-gradient(145deg,rgba(255,255,255,.86),rgba(255,255,255,.68));border-color:var(--glass-border)}
+/* Flex setting rows must still honor JavaScript's hidden state (notably iPhone haptics). */
+.settings-layout .setting-row[hidden]{display:none!important}
+
+/* Keep control alignment and spacing steady across themes and phone widths. */
+.settings-layout .setting-row:has(>label.switch){
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 48px;
+  align-items:center;
+  column-gap:12px;
+  flex-wrap:initial;
+}
+.settings-layout .setting-row:has(>label.switch)>div:first-child{min-width:0}
+.settings-layout .setting-row>label.switch{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 48px;
+  width:48px;
+  height:48px;
+  min-width:48px;
+  min-height:48px;
+  margin-inline-start:auto;
+}
+.settings-layout .setting-row:has(>label.switch)>label.switch{
+  justify-self:end;
+  align-self:center;
+  margin:0;
+}
+.settings-layout .setting-row>label.switch>span{
+  position:absolute;
+  inset:auto;
+  top:50%;
+  left:50%;
+  width:40px;
+  height:24px;
+  transform:translate(-50%,-50%);
+}
+.settings-layout .setting-row>label.switch>span:before{
+  top:3px;
+  left:3px;
+  width:18px;
+  height:18px;
+}
+.settings-layout .setting-row>label.switch>input:checked+span:before{transform:translateX(16px)}
+.settings-layout .setting-row:has(>label.switch)>div:first-child strong{line-height:1.35}
+.settings-layout .setting-row:has(>label.switch)>div:first-child small{max-width:none;line-height:1.5;overflow-wrap:anywhere}
+
+/* Share one readable button rhythm while retaining each action's current style. */
+.primary-button,.secondary-button,.soft-button,.danger-button{
+  box-sizing:border-box;
+  min-height:44px;
+  line-height:1.3;
+  text-align:center;
+}
+.quick-action{box-sizing:border-box;min-width:0;text-align:left}
+.quick-action>span:nth-child(2){display:grid;align-content:center;gap:2px;min-width:0;flex:1}
+.quick-action strong,.quick-action small{line-height:1.35;overflow-wrap:anywhere}
+.shortcut-link-button,.shortcut-guide-link{min-height:44px}
+.shopping-list-pill,.recent-activity-row,.recent-grocery-row{box-sizing:border-box}
+.shopping-list-pill-copy strong,.shopping-list-pill-copy small,
+.recent-activity-copy strong,.recent-activity-copy small{line-height:1.4}
+.shopping-list-add,.recent-grocery-remove,.grocery-row-remove{display:grid;place-items:center}
+.settings-layout :is(button,a,select,textarea,input:not([type="checkbox"]):not([type="radio"])):focus-visible,
+.recent-card :is(button,a,input,summary):focus-visible,
+.quick-actions-row button:focus-visible{
+  outline:2px solid var(--green);
+  outline-offset:2px;
+}
+@media(max-width:390px){
+  .settings-layout .setting-row:has(>label.switch){column-gap:8px}
+  .settings-layout .setting-row:has(>label.switch)>div:first-child small{font-size:11px}
+}
