@@ -7000,6 +7000,29 @@ html[data-theme="gradient"] .recent-grocery-list{background:rgba(255,255,255,.78
 .shortcut-guide-steps li small{font-size:10px;line-height:1.5;color:var(--muted);overflow-wrap:anywhere}
 .shortcut-guide-link{justify-self:start}
 .shortcut-guide-privacy{margin:0;color:var(--muted);font-size:10px;line-height:1.5}
+.shortcut-guide-overview{display:grid;grid-template-columns:42px minmax(0,1fr);align-items:start;gap:11px;padding:14px;border:1px solid color-mix(in srgb,var(--green) 20%,var(--line));border-radius:18px;background:var(--green-soft)}
+.shortcut-guide-overview-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:var(--surface);color:var(--green)}
+.shortcut-guide-overview>div{display:grid;gap:4px;min-width:0}
+.shortcut-guide-kicker{display:block;color:var(--green-deep);font-size:9px;font-weight:800;letter-spacing:.12em;line-height:1.2}
+.shortcut-guide-overview strong{font-size:13px;line-height:1.35}
+.shortcut-guide-overview small{color:var(--muted);font-size:10px;line-height:1.5}
+.shortcut-guide-block{gap:14px;padding:15px;border-radius:18px}
+.shortcut-guide-block-primary{border-color:color-mix(in srgb,var(--green) 30%,var(--line))}
+.shortcut-guide-heading{align-items:flex-start;gap:11px}
+.shortcut-guide-heading>div{gap:4px}
+.shortcut-guide-heading strong{font-size:13px;line-height:1.35}
+.shortcut-guide-heading small{font-size:10px;line-height:1.5}
+.shortcut-guide-flow{gap:0}
+.shortcut-guide-flow li{position:relative;grid-template-columns:26px minmax(0,1fr);gap:10px;padding:0 0 14px}
+.shortcut-guide-flow li:last-child{padding-bottom:0}
+.shortcut-guide-flow li:not(:last-child):after{content:"";position:absolute;top:27px;bottom:2px;left:11px;width:1px;background:color-mix(in srgb,var(--green) 25%,var(--line))}
+.shortcut-guide-flow li>span{position:relative;z-index:1;width:24px;height:24px;border-radius:8px;font-size:10px}
+.shortcut-guide-flow li strong{font-size:11px;line-height:1.4}
+.shortcut-guide-flow li small{font-size:10px;line-height:1.5}
+.shortcut-guide-link{justify-self:stretch;width:100%;min-height:46px}
+.shortcut-guide-privacy{padding-top:11px;border-top:1px solid var(--line);font-size:10px;line-height:1.5}
+.shortcut-help-guide>.form-actions{justify-content:flex-end;margin-top:0;padding-top:2px}
+.shortcut-help-guide>.form-actions .secondary-button{min-width:96px}
 @media(max-width:720px){
   .settings-layout .setting-row:has(>label.switch){gap:12px;align-items:center}
   .interaction-feedback-options .setting-row:has(>label.switch),.shake-quick-entry-row:has(>label.switch){align-items:center;flex-direction:row}
@@ -7008,8 +7031,12 @@ html[data-theme="gradient"] .recent-grocery-list{background:rgba(255,255,255,.78
   .shortcuts-settings-card .shortcut-setting-actions{width:100%;margin:0;justify-content:flex-start}
   .shortcut-help-guide{gap:11px}
   .shortcut-guide-block{padding:12px;gap:10px}
+  .shortcut-guide-overview{padding:12px}
+  .shortcut-guide-flow li{padding-bottom:12px}
+  .shortcut-help-guide>.form-actions .secondary-button{width:100%}
 }
 html[data-theme="gradient"] .shortcut-guide-block{background:linear-gradient(145deg,rgba(255,255,255,.86),rgba(255,255,255,.68));border-color:var(--glass-border)}
+html[data-theme="gradient"] .shortcut-guide-overview{background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(255,255,255,.68));border-color:var(--glass-border)}
 /* Flex setting rows must still honor JavaScript's hidden state (notably iPhone haptics). */
 .settings-layout .setting-row[hidden]{display:none!important}
 
